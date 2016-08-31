@@ -1,0 +1,23 @@
+default: &default
+  adapter: mysql2
+  pool: 50
+  port: 3888
+  timeout: 5000
+  username: edu_account
+  password: 58133240Aa
+  host: zaocantest.mysql.rds.aliyuncs.com
+
+development:
+  <<: *default
+  database: edu_db
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: edu_test
+
+production:
+  <<: *default
+  database: edu_production

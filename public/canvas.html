@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3-polygon.v1.min.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+
+    <style>
+        body{ background-color: ivory; display: flex; padding-left: 300px}
+        canvas{border:1px solid red; flex: 1;}
+    </style>
+    <script>
+
+        function ConvertPointsToPath2D(points){
+            var tempPath2d = new Path2D();
+
+            points.forEach(function(point, index){
+                if (index == 0){
+                    tempPath2d.moveTo(point[0], point[1]);
+                }
+                else {
+                    tempPath2d.lineTo(point[0], point[1]);
+                }
+            });
+            tempPath2d.closePath();
+            return tempPath2d;
+        }
+        // 计算离起点的距离
+        function testOriginPointDistance(origin,x,y,threshold) {
+            threshold = threshold || 5;
+            var length = Math.sqrt(Math.pow((origin[0] - x), 2) + Math.pow((origin[1] - y), 2))
+            return length <= threshold;
+        };
+        $(function(){
+
+
+
+            // 房间路径数组
+            var paths = []; // 元素:二维数组[[0,0], [1,4]]
+            var tempPoints = [];
+
+            // canvas related variables
+            var canvas=document.getElementById("canvas");
+            canvas.width = $('body').width();
+            var ctx=canvas.getContext("2d");
+            var $canvas=$("#canvas");
+            var canvasOffset=$canvas.offset();
+            var offsetX=canvasOffset.left;
+            var offsetY=canvasOffset.top;
+
+            redraw();
+
+            function redraw(){
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                // 画出已有的封闭路径
+                paths.forEach(function (points){
+                    var path2d = ConvertPointsToPath2D(points);
+                    ctx.stroke(path2d);
+                    ctx.fillStyle = points.highLighted?'rgba(52, 152, 219, 0.3)':'rgba(255,165,0,0.3)';
+                    ctx.fill(path2d);
+
+                    var centroid = d3.polygonCentroid(points);
+                    if (centroid && centroid[0] && centroid[1]){
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = 'rgba(255,165,0,1)';
+                        ctx.fillText("九二班 19人", centroid[0], centroid[1]);
+                    }
+
+                });
+
+                // 画出临时路径
+                if (tempPoints && tempPoints.length > 0){
+                    tempPoints.forEach(function(point, index){
+                        ctx.fillStyle= point.highLighted ? "green" : "red";
+
+                        ctx.beginPath();
+                        ctx.arc(point[0],point[1],5,0,Math.PI*2);
+                        ctx.closePath();
+                        ctx.fill();
+
+                        if (index != 0){
+                            var lastPoint = tempPoints[index-1];
+                            ctx.beginPath();
+                            ctx.moveTo(lastPoint[0], lastPoint[1]);
+                            ctx.lineTo(point[0], point[1]);
+                            ctx.closePath();
+                            ctx.stroke();
+                        }
+                    });
+
+                }
+            }
+
+            // 鼠标移动
+            // 1.检测是否处于锚点编辑状态,是的话处理鼠标是否回到初始起点
+            // 2.检测鼠标是否停放在paths中的某一区域,是则高亮
+            function handleMouseMove(e){
+                e.preventDefault();
+                e.stopPropagation();
+
+                // 1.检测是否处于锚点编辑状态,是的话处理鼠标是否回到初始起点
+                var mouseX=parseInt(e.clientX-offsetX);
+                var mouseY=parseInt(e.clientY-offsetY);
+                // 检测是否离起始点位置很近
+                if (tempPoints[0] && testOriginPointDistance(tempPoints[0], mouseX, mouseY, 15)){
+                    tempPoints[0].highLighted = true;
+                }
+                else if(tempPoints[0]) {
+                    tempPoints[0].highLighted = false;
+                }
+
+                // 2.检测鼠标是否停放在paths中的某一区域,是则高亮
+                paths.forEach(function (points){
+                    points.highLighted = d3.polygonContains(points, [mouseX, mouseY]);
+                });
+                redraw();
+            }
+
+            // 鼠标点击
+            function handleMouseClick(e){
+                e.preventDefault();
+                e.stopPropagation();
+                mouseX=parseInt(e.clientX-offsetX);
+                mouseY=parseInt(e.clientY-offsetY);
+
+                var intersect = false;
+                // 禁止点击的point交叉现有的path
+                paths.forEach(function (points){
+                    if (d3.polygonContains(points, [mouseX, mouseY])){
+                        intersect = true;
+                    }
+                });
+
+                if (intersect){
+                    return;
+                }
+
+                tempPoints = tempPoints || [];
+
+                // 检测是否点击了起始点位置
+                if (tempPoints[0] && testOriginPointDistance(tempPoints[0], mouseX, mouseY, 15)){
+                    paths.push(tempPoints);
+
+                    tempPoints = [];
+                    redraw();
+                    return;
+                }
+
+                tempPoints.push([mouseX, mouseY]);
+                redraw();
+            }
+
+            // tell the browser to call handleMousedown
+            // whenever the mouse moves
+            $("#canvas").click(function(e){handleMouseClick(e);});
+            $("#canvas").mousemove(function(e){handleMouseMove(e);});
+            // 撤销操作
+            $(document).keydown(function(e){
+
+                if( e.which === 90 && e.ctrlKey ){
+                    tempPoints.pop();
+                    redraw();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<canvas id="canvas" height=800></canvas>
+
+</body>
+</html>

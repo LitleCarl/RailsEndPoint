@@ -1,0 +1,27 @@
+body.hold-transition.skin-blue.sidebar-mini ng-controller='PortalController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+      /! Content Header (Page header)
+      section.content-header
+        h1
+        |{{greeting}}small Optional description
+        ol.breadcrumb
+          li
+            a href="#"
+              i.fa.fa-dashboard
+              | Level
+          li.active Here
+      /! Main content
+      section.content
+
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'
+
+

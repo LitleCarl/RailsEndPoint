@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RailsEndPoint</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <script>
+    var mainModule;
+    var loadOnce = true;
+    $(document).on('turbolinks:load', function () {
+      if (loadOnce){
+        loadOnce = false;
+        mainModule = angular.module('TsaoAppModule', ['nprogress-rails']);
+
+        mainModule.controller('PortalController', ['$scope', function ($scope) {
+          console.log('Controller init');
+          $scope.greeting = 'Hola!' + Date.now().toString();
+        }]);
+      }
+    });
+
+    // Fix样式问题
+    $(document).on('turbolinks:load', function () {
+      $.AdminLTE.layout.fix();
+
+      $('input').iCheck({
+        checkboxClass: 'icheckbox_flat-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+      });
+
+    });
+
+    $(document).on('turbolinks:load', function () {
+      console.log('once')
+      angular.bootstrap("body", ['TsaoAppModule']);
+    });
+  </script>
+
+</head>
+
+
+<%= yield %>
+
+</html>
