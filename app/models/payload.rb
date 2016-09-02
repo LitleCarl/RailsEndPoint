@@ -60,4 +60,19 @@ class Payload < ActiveRecord::Base
 
     return response
   end
+
+  #
+  # 统计当前在线学生数,返回以hash形式 楼层:人数
+  #
+  # @param options [Hash]
+  # option options [minute] :有效分钟(默认为5,即5分钟以前的数据不会统计入内)
+  #
+  # @return [Response] 状态
+  #
+  def self.statistic_for_online_students_count(options={})
+    response = Response.__rescue__ do |res|
+      minute = options[:minute] || 5
+
+    end
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160831042933) do
+ActiveRecord::Schema.define(version: 20160902073423) do
 
   create_table "clazzs", force: :cascade do |t|
     t.string   "grade",      limit: 255,              comment: "年级"
@@ -46,11 +46,12 @@ ActiveRecord::Schema.define(version: 20160831042933) do
   end
 
   create_table "stations", force: :cascade do |t|
-    t.string   "device_id",    limit: 255,              comment: "基站设备id"
-    t.integer  "room_id",      limit: 4,                comment: "所属房间/走道id"
-    t.string   "group_number", limit: 255,              comment: "同一房间内的基站编号"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "device_id",    limit: 255,                comment: "基站设备id"
+    t.integer  "room_id",      limit: 4,                  comment: "所属房间/走道id"
+    t.string   "group_number", limit: 255,                comment: "同一房间内的基站编号"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.text     "location",     limit: 65535,              comment: "基站坐标"
   end
 
   create_table "students", force: :cascade do |t|

@@ -11,15 +11,24 @@ body.hold-transition.skin-blue.sidebar-mini ng-controller='PortalController'
       /! Content Header (Page header)
       section.content-header
         h1
-        |{{greeting}}small Optional description
-        ol.breadcrumb
-          li
-            a href="#"
-              i.fa.fa-dashboard
-              | Level
-          li.active Here
+        |基本数据统计
+
       /! Main content
       section.content
+        .row
+          .col-md-8.col-md-offset-2
+            .box.box-danger
+              .box-header.with-border
+                h3.box-title 楼层统计
+                .box-tools.pull-right
+                  button.btn.btn-box-tool data-widget="collapse" type="button"
+                    i.fa.fa-minus
+              .box-body
+                canvas#pieChartForOnlineCountOfFloor height="370" style="height: 400px" width="741"
+              .overlay ng-show="isLoadingForOnLineCountOfFloor"
+                i.fa.fa-refresh.fa-spin
+
+    /! /.box-body
 
     == include_slim 'app/views/common/footer'
     == include_slim 'app/views/common/control'

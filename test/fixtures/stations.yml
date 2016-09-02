@@ -8,6 +8,7 @@
 #  group_number :string(255)                            # 同一房间内的基站编号
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  location     :text(65535)                            # 基站坐标
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

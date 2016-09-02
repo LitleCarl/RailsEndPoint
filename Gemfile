@@ -109,9 +109,6 @@ gem 'materialize-sass'
 # Injects Angular.js into your asset pipeline as well as other Angular modules. https://github.com/hiravgandhi/angularjs-rails/
 gem 'angularjs-rails', '~> 1.5', '>= 1.5.6'
 
-# lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
-gem 'lodash-rails', '4.0.0'
-
 # Flexible authentication solution for Rails with Warden. Read more: https://github.com/plataformatec/devise
 gem 'devise', '3.5.2'
 
@@ -144,6 +141,11 @@ gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
 # FontAwesome
 gem 'font-awesome-rails', '~> 4.6', '>= 4.6.3.1'
 
+# Chartjs
+gem 'chartjs-ror', '3.0.2'
+
+# lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
+gem 'lodash-rails', '4.14.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -18,14 +18,98 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require nprogress-angular
+//= require Chart.bundle.min
+//= require lodash
 //= require_tree .
 
-//var mainModule;
-//$(function(){
-//    mainModule = angular.module('TsaoAppModule', ['nprogress-rails']);
-//    mainModule.tsao_controllerNames = [];
-//    mainModule.controller('PortalController', ['$scope', function ($scope) {
-//        $scope.greeting = 'Hola!';
-//    }]);
-//    angular.bootstrap(document, ['TsaoAppModule']);
-//});
+var mainModule;
+var loadOnce = true;
+
+var ApiResponse = {
+    Check: function(response){
+        return response && response['status'] && response['status']['code'] == 200
+    },
+    GetMessage: function(response){
+        if (response && response['status'] && response['status']['message']){
+            return response['status']['message'];
+        }
+        else {
+            return 'Unknown Error';
+        }
+    },
+    GetData: function (response) {
+        return response['data'];
+    }
+};
+var RequestHandler = function(options){
+        //options = {
+        //    http: $http,
+        //    method: 'get',
+        //    data: {},
+        //    path: '',
+        //    host: ''
+        //};
+        var host = options['host'] || 'http://localhost:3000';
+        var url = host + (options['path'] || '');
+        var data = options['data'] || {name: 'cjx'}
+
+        return options['http'][options['method']](url, data);
+            //.success(function (data, status, headers, config) {
+            //})
+            //.error(function (data, status, header, config) {
+            //});
+};
+
+var moduleName = 'TsaoAppMoudle';
+
+$(document).on('turbolinks:load', function () {
+    if (loadOnce){
+        loadOnce = false;
+        //moduleName = 'TsaoAppMoudle';// + Math.random().toString(36).substring(20);
+        mainModule = angular.module(moduleName, ['nprogress-rails']);
+
+        // 控制器配置
+        mainModule.controller('PortalController', ['$scope', '$http', PortalController]);
+        mainModule.controller('FloorIndexController', ['$scope', '$http', FloorIndexController]);
+        mainModule.controller('FloorShowController', ['$scope', '$http', '$attrs', FloorShowController]);
+
+        // 自定义功能
+        // ng-src图片加载完成
+        mainModule.directive('imageonload', function() {
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    element.bind('load', function() {
+                        //call the function that was passed
+                        scope.$apply(attrs.imageonload);
+                    });
+                }
+            };
+        });
+
+
+
+
+    }
+
+});
+
+// Fix样式问题
+$(document).on('turbolinks:load', function () {
+    $.AdminLTE.layout.fix();
+
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_flat-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+    });
+
+});
+
+
+
+$(document).on('turbolinks:load', function () {
+    Turbolinks.clearCache()
+    angular.bootstrap("body", [moduleName]);
+});
+

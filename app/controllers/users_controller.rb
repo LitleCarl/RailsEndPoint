@@ -17,6 +17,5 @@ class UsersController < ApplicationController
   end
 
   def me
-
   end
 end

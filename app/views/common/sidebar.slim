@@ -1,3 +1,5 @@
+
+
 /! Left side column. contains the logo and sidebar
 aside.main-sidebar
   /! sidebar: style can be found in sidebar.less
@@ -24,18 +26,29 @@ aside.main-sidebar
     ul.sidebar-menu
       li.header 功能区
       /! Optionally, you can add icons to the links
-      li.active
-        a href="/users/sign_in"
+      li class=('active' if request.env['PATH_INFO'] == me_users_path)
+        a href=(me_users_path if request.env['PATH_INFO'] != me_users_path)
           i.fa.fa-link
-          span 楼层
-      li
+          span 统计
+      li.treeview class=('active' if request.env['PATH_INFO'] == floors_path)
         a href="#"
           i.fa.fa-link
-          span Another Link
+          span 楼层
+          span.pull-right-container
+            i.fa.fa-angle-left.pull-right
+        ul.treeview-menu
+          li
+            a href=(floors_path if request.env['PATH_INFO'] != floors_path)
+              i.fa.fa-circle-o
+              |查看
+          li
+            a href="#"
+              i.fa.fa-circle-o
+              |添加
       li.treeview
         a href="#"
           i.fa.fa-link
-          span Multilevel
+          span 班级
           span.pull-right-container
             i.fa.fa-angle-left.pull-right
         ul.treeview-menu
