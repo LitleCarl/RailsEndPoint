@@ -16,7 +16,7 @@ set :deploy_to, '/github/edu_app'
 # Default value for :scm is :git
 set :scm, :git
 
-set :branch, 'master'
+set :branch, 'release'
 # Default value for :format is :pretty
 set :format, :pretty
 

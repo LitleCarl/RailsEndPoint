@@ -20,4 +20,4 @@ test:
 
 production:
   <<: *default
-  database: edu_production
+  database: edu_db_pro
