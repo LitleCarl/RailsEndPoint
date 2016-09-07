@@ -1,0 +1,14 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  host: http://localhost:3001
+
+development: &development
+  <<: *defaults
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+

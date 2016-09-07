@@ -31,6 +31,7 @@ module RailsEndPoint
     config.active_record.default_timezone = :local
 
     config.autoload_paths << File.join(config.root, 'lib')
+    config.autoload_paths << File.join(config.root, 'app', 'settings')
 
     config.cache_store = :redis_store, { host: "localhost",
                                          port: 6379,

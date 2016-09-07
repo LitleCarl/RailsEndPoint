@@ -1,0 +1,45 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowController'
+  .wrapper
+    /! Main Header
+    /! Left side column. contains the logo and sidebar
+    == include_slim 'app/views/board/common/sidebar'
+    .content-wrapper
+      /! Content Header (Page header)
+      section.content-header
+      /! Main content
+      section.content
+        .row
+          /.col-md-4
+
+          .col-md-9
+            .row
+              .col-md-12
+                .box.box-danger
+                  .box-header.with-border
+                    h3.box-title 今日最新动态
+                    .box-tools.pull-right
+
+                  .box-body
+                    .info-box ng-repeat='comment in comments'
+                      span.info-box-icon.bg-red
+                        i.fa.fa-star-o
+                      .info-box-content
+                        span.info-box-number
+                          span.text-info ng-bind='comment.student.name'
+                          span ng-bind="'同学因为' + comment.content + '得到了一个赞'"
+                        br
+                        br
+                        span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
+                        span.info-box-text.pull-right ng-bind='comment.show_time'
+
+          /! /.info-box-content
+          .col-md-3
+            .info-box.bg-green
+              span.info-box-icon
+                i.fa.fa-thumbs-o-up
+              .info-box-content
+                span.info-box-text 大拇指
+                span.info-box-number ng-bind='comments.length'
+                .progress
+                  .progress-bar style=("width: 70%")
+                span.progress-description ng-bind="'今天一共点了'+comments.length + '个赞~\(≧▽≦)/~'"

@@ -9,9 +9,15 @@
 #  clazz_id   :integer                                # 所属班级id
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  gender     :string(255)                            # 性别
+#  avatar     :string(255)                            # 头像
 #
 
 class Student < ActiveRecord::Base
+
+  # 挂载头像
+  mount_uploader :avatar, CadUploader
+
   # 通用查询方法
   include Concerns::Query::Methods
 

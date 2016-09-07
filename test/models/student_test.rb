@@ -9,6 +9,8 @@
 #  clazz_id   :integer                                # 所属班级id
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  gender     :string(255)                            # 性别
+#  avatar     :string(255)                            # 头像
 #
 
 require 'test_helper'

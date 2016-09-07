@@ -10,6 +10,10 @@
 #
 
 class Floor < ActiveRecord::Base
+
+  # 挂载图片
+  mount_uploader :image, CadUploader
+
   # 通用查询方法
   include Concerns::Query::Methods
 
@@ -77,5 +81,31 @@ class Floor < ActiveRecord::Base
     end
 
     return response
+  end
+
+  #
+  # 添加楼层api
+  #
+  # @param options [Hash]
+  # option options [floor_name] :名称
+  # option options [floor_cad] :楼层cad图
+  #
+  # @return [Response, Array] 状态
+  #
+  def self.create_with_options_for_api(options={})
+    floor = nil
+    response = Response.__rescue__ do |res|
+      floor_name, floor_cad = options[:floor_name], options[:floor_cad]
+
+      res.__raise__(Response::Code::ERROR, '参数错误') if floor_name.blank? || floor_cad.blank?
+
+      puts "----------floor_cad-----:#{floor_cad}"
+
+      floor = Floor.new
+      floor.name = floor_name
+      floor.image = floor_cad
+      floor.save!
+    end
+    return response, floor
   end
 end

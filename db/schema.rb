@@ -11,12 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902073423) do
+ActiveRecord::Schema.define(version: 20160907034257) do
 
   create_table "clazzs", force: :cascade do |t|
     t.string   "grade",      limit: 255,              comment: "年级"
     t.string   "number",     limit: 255,              comment: "班级号"
     t.integer  "room_id",    limit: 4,                comment: "班级所在的房间id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "teacher_id", limit: 4,   null: false, comment: "关联教师"
+    t.integer  "student_id", limit: 4,   null: false, comment: "关联学生"
+    t.string   "content",    limit: 255, null: false, comment: "评论内容"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -54,11 +62,30 @@ ActiveRecord::Schema.define(version: 20160902073423) do
     t.text     "location",     limit: 65535,              comment: "基站坐标"
   end
 
+  create_table "sticker_configs", force: :cascade do |t|
+    t.integer  "key",        limit: 4,                comment: "按键编号"
+    t.string   "value",      limit: 255,              comment: "按键代表的评论内容"
+    t.integer  "teacher_id", limit: 4,                comment: "关联教师"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "students", force: :cascade do |t|
     t.string   "name",       limit: 255,              comment: "学生姓名"
     t.string   "number",     limit: 255,              comment: "学号"
     t.string   "device_id",  limit: 255,              comment: "手环设备号"
     t.integer  "clazz_id",   limit: 4,                comment: "所属班级id"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "gender",     limit: 255,              comment: "性别"
+    t.string   "avatar",     limit: 255,              comment: "头像"
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4,   null: false, comment: "关联用户"
+    t.string   "name",       limit: 255, null: false, comment: "名字"
+    t.string   "device_id",  limit: 255, null: false, comment: "教师手环设备号"
+    t.string   "subject",    limit: 255,              comment: "学科"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -69,6 +96,7 @@ ActiveRecord::Schema.define(version: 20160902073423) do
     t.integer  "permission", limit: 4,   default: 0,              comment: "权限bit"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.string   "avatar",     limit: 255,                          comment: "头像"
   end
 
 end

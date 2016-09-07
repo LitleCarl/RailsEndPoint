@@ -51,7 +51,7 @@ var RequestHandler = function(options){
         //};
         var host = options['host'] || 'http://localhost:3000';
         var url = host + (options['path'] || '');
-        var data = options['data'] || {name: 'cjx'}
+        var data = options['data'] || {}
 
         return options['http'][options['method']](url, data);
             //.success(function (data, status, headers, config) {
@@ -72,6 +72,8 @@ $(document).on('turbolinks:load', function () {
         mainModule.controller('PortalController', ['$scope', '$http', PortalController]);
         mainModule.controller('FloorIndexController', ['$scope', '$http', FloorIndexController]);
         mainModule.controller('FloorShowController', ['$scope', '$http', '$attrs', FloorShowController]);
+        mainModule.controller('ClazzIndexController', ['$scope', '$http', ClazzIndexController]);
+        mainModule.controller('BoardClazzShowController', ['$scope', '$http', BoardClazzShowController]);
 
         // 自定义功能
         // ng-src图片加载完成
@@ -86,10 +88,6 @@ $(document).on('turbolinks:load', function () {
                 }
             };
         });
-
-
-
-
     }
 
 });
@@ -109,7 +107,7 @@ $(document).on('turbolinks:load', function () {
 
 
 $(document).on('turbolinks:load', function () {
-    Turbolinks.clearCache()
+    Turbolinks.clearCache();
     angular.bootstrap("body", [moduleName]);
 });
 
