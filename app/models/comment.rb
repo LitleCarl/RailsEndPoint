@@ -36,7 +36,17 @@ class Comment < ActiveRecord::Base
 
       stick_config = StickerConfig.query_first_by_options(teacher_id: teacher.id, key: key)
 
-      content = stick_config.present? ? stick_config.value : '课堂表现良好'
+      #TODO content = stick_config.present? ? stick_config.value : '课堂表现良好'
+      random_v = rand(4)
+      if random_v == 0
+        content = '课堂表现良好'
+      elsif random_v == 1
+        content = '发音标准'
+      elsif random_v == 2
+        content = '写字写的好'
+      else
+        content = '唱歌唱得好'
+      end
 
       comment = Comment.new
       comment.teacher = teacher
