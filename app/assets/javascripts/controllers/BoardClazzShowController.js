@@ -1,7 +1,7 @@
 var BoardClazzShowController = function($scope, $http){
 
     // 初始化Socket.io
-    var socket = io('http://localhost:3001/board');
+    var socket = io('http://edu.zaocan84.com:3001/board');
     socket.on('NewComment', function (clazz_id) {
         $scope.GetComments()
     });
