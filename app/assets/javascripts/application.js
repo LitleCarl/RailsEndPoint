@@ -49,7 +49,7 @@ var RequestHandler = function(options){
         //    path: '',
         //    host: ''
         //};
-        var host = options['host'] || 'http://localhost:3000';
+        var host = options['host'] || 'http://edu.zaocan84.com';
         var url = host + (options['path'] || '');
         var data = options['data'] || {}
 
