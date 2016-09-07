@@ -1,0 +1,38 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='FloorNewController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    .content-wrapper
+      /! Main content
+      section.content
+        .row
+          .col-md-8.col-md-offset-2
+            .box.box-info
+              .box-header.with-border
+                h3.box-title 添加楼层
+              .box-body
+                = form_tag floors_path, name: 'post_floor_form', method: :post, multipart: true, remote: true
+                  .form-group
+                    label 楼层名称
+                    .input-group
+                      .input-group-addon
+                        i.fa.fa-database
+                      input.form-control type="text" name="floor_name"
+                    .form-group
+                      label for="floor-cad" 楼层CAD图
+                      input#floor-cad type="file" name="floor_cad" /
+                    /! /.table-responsive
+                    /! /.box-body
+                    .box-footer.clearfix style=("display: block;")
+                      button.btn.btn-sm.btn-info.pull-right type='submit' 提交
+              /.overlay ng-show="isLoadingForOnLineCountOfFloor"
+              /  i.fa.fa-refresh.fa-spin
+
+    /! /.box-body
+
+    == include_slim 'app/views/common/footer'
+      == include_slim 'app/views/common/control'
+
+

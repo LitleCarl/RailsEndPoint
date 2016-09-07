@@ -1,0 +1,165 @@
+
+javascript:
+  $(function () {
+    $('#room-rightbar').css('max-height', $(window).height());
+  });
+
+
+
+  $(function () {
+
+  });
+body.hold-transition.skin-black.sidebar-mini ng-controller='FloorShowController' data-floorid=(@floor_id)
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+      /! Content Header (Page header)
+      section.content-header
+      /! Main content
+      section.content
+        .row
+          .col-md-8
+            .box
+              .box-header.with-border
+                h3.box-title 楼层CAD
+                .box-tools.pull-right
+                  button.btn.btn-sm.btn-box-tool.btn-flat 上传
+
+              /! /.box-header
+              .box-body
+                #canvas-wrapper style="width: 100%;position: relative;"
+                  img#canvas-image ng-src='{{floor.image}}' style=("width: 100%;") imageonload='ResizeCanvas()'
+                  canvas#canvas style="position: absolute;width: 100%;height: 100%;left: 0; top: 0; display: block;"
+
+              /! /.table-responsive
+              /! /.box-body
+              .box-footer.clearfix style=("display: block;")
+                a.btn.btn-sm.btn-info.btn-flat.pull-left href=(new_floor_path)  添加房间
+                a.btn.btn-sm.btn-default.btn-flat.pull-right href="javascript:void(0)"  View All Orders
+              .overlay ng-show="isLoadingForGetFloorShow"
+                i.fa.fa-refresh.fa-spin
+          .col-md-4 ng-show='tempPath != null'
+            .box.box-danger
+              .box-header
+                h3.box-title 添加房间
+              .box-body
+                /! Date dd/mm/yyyy
+                .form-group
+                  label 房间名称
+                  .input-group
+                    .input-group-addon
+                      i.fa.fa-calendar
+                    input.form-control data-mask="" type="text" ng-model='tempPathName'
+                button.btn.btn-block.btn-success.btn-flat type="button" ng-click='CreateRoom()' ng-disabled='!CreateRoomBtnEnabled()' 提交
+                button.btn.btn-block.btn-danger.btn-flat type="button" ng-click='tempPath = null;' 取消
+          /! /.input group
+          /! /.form group
+          /! /.box-body
+          .col-md-4
+
+            .row ng-show='selectedStation != null'
+              .col-md-12
+                .box
+                  .box-header.with-border
+                    h3.box-title 编辑蓝牙基站
+                  /! /.box-header
+                  .box-body
+                    .form-group
+                      label 基站设备号
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-database
+                        input.form-control data-mask="" type="text" ng-model='selectedStation.device_id'
+                    .form-group
+                      label Group number
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-sort-numeric-desc
+                        input.form-control data-mask="" type="text" ng-model='selectedStation.group_number'
+                    .form-group
+                      label 坐标
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-location-arrow
+                        input.form-control data-mask="" type="text" ng-model='selectedStation.location' disabled='true'
+                  /! /.table-responsive
+                  /! /.box-body
+                  .box-footer.clearfix style=("display: block;")
+                    a.btn.btn-sm.btn-info.pull-right ng-click='UpdateStationForRoom()'  保存
+                    a.btn-danger.btn.btn-sm.btn-info.pull-left ng-click='CancelSelectStation()'  取消
+                  .overlay ng-show="isUpdatingStationForRoom"
+                    i.fa.fa-refresh.fa-spin
+            .row ng-show='tempBlueToothStation != null'
+              .col-md-12
+                .box
+                  .box-header.with-border
+                    h3.box-title 新建蓝牙基站
+                  /! /.box-header
+                  .box-body
+                    .form-group
+                      label 基站设备号
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-database
+                        input.form-control data-mask="" type="text" ng-model='tempBlueToothStation.device_id'
+                    .form-group
+                      label Group number
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-sort-numeric-desc
+                        input.form-control data-mask="" type="text" ng-model='tempBlueToothStation.group_number'
+                    .form-group
+                      label 坐标
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-location-arrow
+                        input.form-control data-mask="" type="text" ng-model='tempBlueToothStation.point' disabled='true'
+                    .form-group
+                      label 所属房间
+                      .input-group
+                        .input-group-addon
+                          i.fa.fa-inbox
+                        input.form-control data-mask="" type="text" ng-model='tempBlueToothStation.room.name' disabled='true'
+                  /! /.table-responsive
+                  /! /.box-body
+                  .box-footer.clearfix style=("display: block;")
+                    a.btn.btn-sm.btn-info.pull-right ng-click='CreateStationForRoom()'  添加基站
+                    a.btn-danger.btn.btn-sm.btn-info.pull-left ng-click='tempBlueToothStation = null;'  取消
+                  .overlay ng-show="isLoadingForGetFloorShow"
+                    i.fa.fa-refresh.fa-spin
+            .row
+              .col-md-12 ng-show='tempPath == null'
+                #room-rightbar.nav-tabs-custom style="overflow-y: scroll;"
+                  ul.nav.nav-tabs
+                    li.active
+                      a aria-expanded="true" data-toggle="tab" href="#activity"  数据
+                    li
+                      a aria-expanded="false" data-toggle="tab" href="#timeline"  房间/走道
+
+                  .tab-content
+                    #activity.tab-pane.active
+                      |AA
+                    #timeline.tab-pane
+                      .small-box.bg-aqua ng-repeat='room in floor.rooms' ng-click='selectRoom($index)'
+                        .inner
+                          h3 房间:{{room.name}}
+                          br
+                          br
+                        .icon
+                          i.fa.fa-home
+                        a.small-box-footer href="#"
+                          | 查看在线学生
+                          i.fa.fa-arrow-circle-right
+
+    /! /.tab-pane
+    /! /.tab-content
+    /! /.nav-tabs-custom
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'
+

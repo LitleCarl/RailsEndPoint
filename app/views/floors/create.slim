@@ -1,0 +1,31 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='FloorNewController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    .content-wrapper
+      /! Main content
+      section.content
+        .row
+          .col-md-8.col-md-offset-2
+            - if @response.is_successful?
+              .callout.callout-success
+                h4 楼层添加成功
+                p
+                  a href=(floor_path(@floor)) 现在去看看
+            - else
+              .callout.callout-danger
+                h4 操作失败
+                p = @response.message
+
+
+  /.overlay ng-show="isLoadingForOnLineCountOfFloor"
+    /  i.fa.fa-refresh.fa-spin
+
+    /! /.box-body
+
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'
+
+

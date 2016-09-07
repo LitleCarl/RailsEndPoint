@@ -1,0 +1,85 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='ClazzIndexController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+
+      /! Main content
+      section.content
+        .row
+          div ng-class='{false: "col-md-12", true: "col-md-8"}[ShouldShowRightBar]'
+            .box.box-info
+              .box-header.with-border
+                h3.box-title 班级列表
+
+              /! /.box-header
+              .box-body style=("display: block;")
+                .table-responsive
+                  table.table.no-margin
+                    thead
+                      tr
+                        th 名称
+                        th 学生数
+                    tbody
+                      tr ng-repeat="clazz in clazzs"
+                        td
+                          a ng-click="ShowClazz(clazz)" {{clazz.grade+"("+clazz.number+")班"}}
+                        td
+                          span.label.label-success ng-bind="clazz.student_count"
+
+              .box-footer.clearfix style=("display: block;")
+                a.btn.btn-sm.btn-info.btn-flat.pull-left href=(new_clazz_path)  新建
+              .overlay ng-show="isLoadingForGetClazzs"
+                i.fa.fa-refresh.fa-spin
+          .col-md-4 ng-show="ShouldShowRightBar"
+            .box.box-info
+              .box-header.with-border
+                h3.box-title 班级详情
+
+              /! /.box-header
+              .box-body style=("display: block;")
+                .form-group
+                  label 年级
+                  .input-group
+                    .input-group-addon
+                      i.fa.fa-database
+                    input.form-control data-mask="" type="text" ng-model='SelectedClazz.grade'
+                  .form-group
+                    label 班号
+                    .input-group
+                      .input-group-addon
+                        i.fa.fa-sort-numeric-desc
+                      input.form-control data-mask="" type="text" ng-model='SelectedClazz.number'
+                  .form-group
+                    label 楼层/房间选择
+                    .input-group
+                      .btn-group
+                        button.btn.btn-info type="button"  {{SelectedClazz.room_id}}
+                        button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                          span.caret
+                          span.sr-only Toggle Dropdown
+                        ul.dropdown-menu
+                          li ng-repeat='floor in floors'
+                            a ng-click='SelectedFloor = floor' {{floor.name}}
+                      .btn-group
+                        button.btn.btn-info type="button"  102
+                        button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                          span.caret
+                          span.sr-only Toggle Dropdown
+                        ul.dropdown-menu
+                          li ng-repeat='floor in floors'
+                            a ng-click='' 102
+
+              .box-footer.clearfix style=("display: block;")
+                a.btn.btn-sm.btn-success.btn-flat.pull-left 保存
+              .overlay ng-show="isLoadingForGetClazzs"
+                i.fa.fa-refresh.fa-spin
+    /! /.box-body
+
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'

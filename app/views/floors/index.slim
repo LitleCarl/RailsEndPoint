@@ -1,0 +1,46 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='FloorIndexController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+      /! Content Header (Page header)
+      section.content-header
+      /! Main content
+      section.content
+        .row
+          .col-md-12
+            .box.box-info
+              .box-header.with-border
+                h3.box-title 楼层信息
+
+              /! /.box-header
+              .box-body style=("display: block;")
+                .table-responsive
+                  table.table.no-margin
+                    thead
+                      tr
+                        th 名称
+                        th 房间/走道数
+                        th 操作
+                    tbody
+                      tr ng-repeat="floor in floors"
+                        td
+                          a href="pages/examples/invoice.html" ng-bind="floor.name"
+                        td
+                          span.label.label-success ng-bind="floor.room_count"
+                        td
+                          a.btn.btn-default.btn-xs role="button" ng-href=("{{'/floors/' + floor.id}}") 详情
+
+              .box-footer.clearfix style=("display: block;")
+                a.btn.btn-sm.btn-info.btn-flat.pull-left href=(new_floor_path)  新建
+                a.btn.btn-sm.btn-default.btn-flat.pull-right href="javascript:void(0)"  View All Orders
+              .overlay ng-show="isLoadingForGetFloors"
+                i.fa.fa-refresh.fa-spin
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'
+
