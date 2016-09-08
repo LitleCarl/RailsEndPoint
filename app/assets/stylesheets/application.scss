@@ -1,10 +1,14 @@
 /*
  *= require_self
+ *= require adminlte/AdminLTE.min.css
+ *= require adminlte/skins/_all-skins.min
+ *= require iCheck/all.css
  *= require font-awesome
  *= require nprogress
  *= require nprogress-bootstrap
  *= require nprogress-turbolinks5
  *= require_tree .
   */
+
 @import "bootstrap-sprockets";
 @import "bootstrap";

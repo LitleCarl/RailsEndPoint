@@ -20,6 +20,9 @@
 //= require nprogress-angular
 //= require Chart.bundle.min
 //= require lodash
+//= require app
+//= require icheck.min
+
 //= require_tree .
 
 var mainModule;
