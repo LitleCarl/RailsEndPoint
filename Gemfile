@@ -143,6 +143,9 @@ gem 'chartjs-ror', '3.0.2'
 
 # lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
 gem 'lodash-rails', '4.14.1'
+
+gem 'rails-assets-iCheck', source: 'https://rails-assets.org'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

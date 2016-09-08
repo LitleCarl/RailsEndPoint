@@ -21,8 +21,7 @@
 //= require Chart.bundle.min
 //= require lodash
 //= require app
-//= require icheck.min
-
+//= require iCheck
 //= require_tree .
 
 var mainModule;
@@ -99,19 +98,19 @@ $(document).on('turbolinks:load', function () {
 
 });
 
-// Fix样式问题
-$(document).on('turbolinks:load', function () {
-    $.AdminLTE.layout.fix();
+$(document).ready(function(){
+    // Fix样式问题
+    $(document).on('turbolinks:load', function () {
+        $.AdminLTE.layout.fix();
 
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_flat-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' // optional
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+
     });
-
 });
-
-
 
 $(document).on('turbolinks:load', function () {
     Turbolinks.clearCache();
