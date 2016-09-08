@@ -49,7 +49,7 @@ var RequestHandler = function(options){
         //    path: '',
         //    host: ''
         //};
-        var host = options['host'] || 'http://edu.zaocan84.com';
+        var host = options['host'] || window.appHost;
         var url = host + (options['path'] || '');
         var data = options['data'] || {}
 
@@ -64,6 +64,10 @@ var moduleName = 'TsaoAppMoudle';
 
 $(document).on('turbolinks:load', function () {
     if (loadOnce){
+
+        var urlMatchGroup = window.location.href.match(/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/);
+        window.appHost = urlMatchGroup[1] + urlMatchGroup[3];
+
         loadOnce = false;
         //moduleName = 'TsaoAppMoudle';// + Math.random().toString(36).substring(20);
         mainModule = angular.module(moduleName, ['nprogress-rails']);
