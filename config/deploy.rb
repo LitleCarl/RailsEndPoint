@@ -48,7 +48,7 @@ before 'deploy:check:linked_files', 'deploy:shared:execute' do
     project_dir = "#{work_dir}/#{fetch(:branch)}"
 
     if test("[ -d #{project_dir} ]")
-
+      execute "cd #{project_dir};git checkout release"
     else
       execute "source ~/.bashrc; mkdir -p #{work_dir}; cd #{work_dir}; git clone #{repo_url} #{fetch(:branch)}; cd #{project_dir}; gem install bundler; git checkout -t -b #{fetch(:branch)} origin/#{fetch(:branch)}"
     end

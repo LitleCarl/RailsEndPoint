@@ -100,9 +100,6 @@ gem 'airbrake', '4.3.4'
 # JPush's officially supported Ruby client library for accessing JPush APIs. 极光推送官方支持的 Ruby 版本服务器端 SDK. Read more: https://github.com/jpush/jpush-api-ruby-client
 gem 'jpush', '3.2.1'
 
-# Use materialzecss in your rails asset pipeline. https://github.com/mkhairi/materialize-sass
-gem 'materialize-sass'
-
 # Injects Angular.js into your asset pipeline as well as other Angular modules. https://github.com/hiravgandhi/angularjs-rails/
 gem 'angularjs-rails', '~> 1.5', '>= 1.5.6'
 
