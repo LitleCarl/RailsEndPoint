@@ -144,6 +144,7 @@ gem 'chartjs-ror', '3.0.2'
 # lodash for the Rails asset pipeline. http://github.com/rh/lodash-rails
 gem 'lodash-rails', '4.14.1'
 
+# Icheck的assets
 gem 'rails-assets-iCheck', source: 'https://rails-assets.org'
 
 group :development, :test do
