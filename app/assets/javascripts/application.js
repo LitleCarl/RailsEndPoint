@@ -51,7 +51,7 @@ var RequestHandler = function(options){
         //};
         var host = options['host'] || window.appHost;
         var url = host + (options['path'] || '');
-        var data = options['data'] || {}
+        var data = options['data'] || {};
 
         return options['http'][options['method']](url, data);
             //.success(function (data, status, headers, config) {
