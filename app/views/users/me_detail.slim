@@ -1,0 +1,78 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+      /! Main content
+      section.content
+        .row
+          .col-md-8
+            /! Widget: user widget style 1
+            .box.box-widget.widget-user
+              /! Add the bg color to the header using any of the bg-* classes
+              .widget-user-header.bg-aqua-active
+                h3.widget-user-username = params[:user].show_name
+                h5.widget-user-desc = params[:user].teacher.subject
+              .widget-user-image
+                img.img-circle alt=("User Avatar") src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user1-128x128.jpg" /
+              .row
+                .col-md-12 style="padding: 50px;padding-bottom: 10px;"
+                  table.table.table-bordered
+                    tbody
+                      tr
+                        th 按键编号
+                        th 评论原因
+                        th style=("width: 100px") 操作
+                      tr ng-repeat="sticker_config in sticker_configs"
+                        td
+                          span ng-bind="sticker_config.sticker_key"
+
+                        td
+                          input.form-control placeholder=("上课表现优秀") type="text" ng-disabled='!sticker_config.isEditing' ng-model='sticker_config.value'
+                        td
+                          a.btn.btn-social-icon.btn-danger ng-show='!sticker_config.isEditing' ng-click='sticker_config.isEditing = true;'
+                            i.fa.fa-pencil-square-o
+                          a.btn.btn-social-icon.btn-twitter ng-show='sticker_config.isEditing' ng-click='UpdateStickerConfig(sticker_config)'
+                            i.fa.fa-floppy-o
+                          a.btn.btn-social-icon.btn-danger.pull-right style="line-height:34px; text-align: center;" ng-show='sticker_config.isEditing' ng-click='sticker_config.isEditing = false;' 取消
+
+              .box-footer
+                .row
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 3,200
+                      span.description-text 今日点赞
+                  /! /.description-block
+                  /! /.col
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 13,000
+                      span.description-text 总点赞
+          .col-md-4
+            .info-box ng-repeat='comment in comments'
+              span.info-box-icon.bg-red
+                i.fa.fa-star-o
+              .info-box-content
+                span.info-box-number
+                  span.text-info ng-bind='comment.student.name'
+                  span ng-bind="'同学因为' + comment.content + '得到了一个赞'"
+                br
+                br
+                span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
+                span.info-box-text.pull-right ng-bind='comment.show_time'
+    /! /.description-block
+    /! /.col
+    /! /.row
+    /! /.widget-user
+
+    /! /.box-body
+
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'
+
+

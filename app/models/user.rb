@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
   # 挂载头像
   mount_uploader :avatar, CadUploader
 
+  # 关联老师
+  has_one :teacher
+
   # 默认统计时效
   module StatisticThreshold
     MIN = 5.minutes
@@ -28,6 +31,15 @@ class User < ActiveRecord::Base
   # 只返回每次数据中信号最强的数据
   def footprints (from_time=(Time.now - 5.minutes), limit=10)
     Payload.find_by_sql("SELECT p1.*,floor.*  FROM `payloads` p1 LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`token` = p2.`token` AND p1.`strength` < p2.`strength` ) LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` ) LEFT JOIN `rooms` as room ON (room.`id` = station.`room_id` ) LEFT JOIN `floors` AS floor ON (floor.`id` = room.`floor_id` ) WHERE p1.created_at >= '#{from_time}' AND p2.`id` IS NULL AND floor.id IS NOT NULL AND p1.`student_id` = #{self.id}   ORDER BY p1.`created_at` DESC  LIMIT #{limit}")
+  end
+
+  # 网页显示名称
+  def show_name
+    if self.teacher.present?
+      return self.teacher.name
+    else
+      return ''
+    end
   end
 
   #
@@ -120,6 +132,47 @@ class User < ActiveRecord::Base
       user = self.query_first_by_options({username: username, password: password})
 
       res.__raise__(Response::Code::ERROR, '用户名或者密码错误') if user.blank?
+    end
+
+    return response, user
+  end
+
+  #
+  # 用户注册接口
+  #
+  # @param options [Hash]
+  # option options [username] :用户名
+  # option options [password] :密码
+  # option options [real_name] :真名
+  # option options [device_id] :设备号
+  # option options [subject] :学科
+  #
+  # @return [Response, Array] 状态，基站列表
+  #
+  def self.sign_up_with_options(options={})
+    user = nil
+    response = Response.__rescue__ do |res|
+      transaction do
+        username, password, real_name, device_id, subject = options[:username], options[:password], options[:real_name], options[:device_id], options[:subject]
+
+        res.__raise__(Response::Code::ERROR, '用户名不能为空') if username.blank?
+        res.__raise__(Response::Code::ERROR, '密码不能低于8位') if password.blank? || password.length < 8
+        res.__raise__(Response::Code::ERROR, '真名不能为空') if real_name.blank?
+        res.__raise__(Response::Code::ERROR, '设备号不能为空') if device_id.blank?
+        res.__raise__(Response::Code::ERROR, '学科不能为空') if subject.blank?
+
+        user = User.new
+        user.username = username
+        user.password = password
+        user.save!
+
+        teacher = Teacher.new
+        teacher.name = real_name
+        teacher.device_id = device_id
+        teacher.subject = subject
+        teacher.user = user
+        teacher.save!
+      end
     end
 
     return response, user

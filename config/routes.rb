@@ -4,6 +4,10 @@ Rails.application.routes.draw do
       get :sign_in
       post :sign_in
       get :me
+      get :sign_up
+      post :sign_up
+
+      get :me_detail
     end
   end
 
@@ -45,6 +49,20 @@ Rails.application.routes.draw do
 
     # 班级
     resources :clazzs, only: [:index]
+
+    # 老师
+    resources :teachers do
+      collection do
+        # 获取评论
+        get :comments
+
+        # 获取魔法棒配置
+        get :sticker_configs
+
+        # 更新魔法棒配置
+        post :update_sticker_config
+      end
+    end
   end
 
   namespace :board do

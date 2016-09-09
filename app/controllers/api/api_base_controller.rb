@@ -10,5 +10,9 @@ class Api::ApiBaseController < ApplicationController
 
     @user = user
     params[:user] = @user
+
+    @teacher = user.teacher
+    params[:teacher] = @teacher
+
   end
 end

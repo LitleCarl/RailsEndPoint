@@ -9,7 +9,7 @@ aside.main-sidebar
       .pull-left.image
         img.img-circle alt=("User Image") src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user2-160x160.jpg" /
       .pull-left.info
-        p 曹佳鑫
+        p = params[:user].teacher.name
         /! Status
         a href="#"
           i.fa.fa-circle.text-success
@@ -60,3 +60,16 @@ aside.main-sidebar
             a href=(new_clazz_path if request.env['PATH_INFO'] != new_clazz_path)
               i.fa.fa-circle-o
               |添加
+
+
+      li.treeview
+        a href="#"
+          i.fa.fa-link
+          span 我的
+          span.pull-right-container
+            i.fa.fa-angle-left.pull-right
+        ul.treeview-menu class=('active' if [me_detail_users_path ].include?(request.env['PATH_INFO']))
+          li
+            a href=(me_detail_users_path if request.env['PATH_INFO'] != me_detail_users_path)
+              i.fa.fa-circle-o
+              |资料

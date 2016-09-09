@@ -18,4 +18,79 @@ class Teacher < ActiveRecord::Base
 
   # 关联用户
   belongs_to :user
+
+  # 关联评论
+  has_many :comments
+
+  # 关联魔法棒配置
+  has_many :sticker_configs
+
+  #
+  # 获取教师的评论
+  #
+  # @param options [Hash]
+  # option options [teacher] :教师
+  # option options [page] :页数
+  # option options [limit] :每页数量
+  #
+  # @return [Response, Array] 状态，评论数组
+  #
+  def self.query_comments_for_api(options={})
+    comments = []
+    response = Response.__rescue__ do |res|
+      teacher, page, limit = options[:teacher], options[:page], options[:limit]
+
+      res.__raise__(Response::Code::ERROR, '参数错误') if teacher.blank?
+
+      comments = teacher.comments.order('created_at DESC').page(page).per(limit)
+    end
+    return response, comments
+  end
+
+  #
+  # 获取教师的魔法棒配置
+  #
+  # @param options [Hash]
+  # option options [teacher] :教师
+  #
+  # @return [Response, Array] 状态，评论数组
+  #
+  def self.query_sticker_configs_for_api(options={})
+    sticker_configs = []
+    response = Response.__rescue__ do |res|
+      teacher = options[:teacher]
+
+      res.__raise__(Response::Code::ERROR, '参数错误') if teacher.blank?
+
+      sticker_configs = teacher.sticker_configs.order('sticker_configs.sticker_key ASC')
+    end
+    return response, sticker_configs
+  end
+
+  #
+  # 更新教师的魔法棒配置
+  #
+  # @param options [Hash]
+  # option options [teacher] :教师
+  # option options [sticker_config] :配置
+  #
+  # @return [Response, Array] 状态，评论数组
+  #
+  def self.update_sticker_config_for_api(options={})
+    response = Response.__rescue__ do |res|
+      teacher, sticker_config = options[:teacher], options[:sticker_config]
+
+      res.__raise__(Response::Code::ERROR, '权限错误') if teacher.blank?
+      res.__raise__(Response::Code::ERROR, '配置错误') if sticker_config.blank?
+
+      sticker_config_model = StickerConfig.query_first_by_id(sticker_config[:id])
+
+      res.__raise__(Response::Code::ERROR, '配置不存在') if sticker_config_model.blank?
+
+      sticker_config_model.sticker_key = sticker_config[:sticker_key]
+      sticker_config_model.value = sticker_config[:value]
+      sticker_config_model.save!
+    end
+    return response
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907034257) do
+ActiveRecord::Schema.define(version: 20160909094939) do
 
   create_table "clazzs", force: :cascade do |t|
     t.string   "grade",      limit: 255,              comment: "年级"
@@ -63,11 +63,11 @@ ActiveRecord::Schema.define(version: 20160907034257) do
   end
 
   create_table "sticker_configs", force: :cascade do |t|
-    t.integer  "key",        limit: 4,                comment: "按键编号"
-    t.string   "value",      limit: 255,              comment: "按键代表的评论内容"
-    t.integer  "teacher_id", limit: 4,                comment: "关联教师"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "sticker_key", limit: 4
+    t.string   "value",       limit: 255,              comment: "按键代表的评论内容"
+    t.integer  "teacher_id",  limit: 4,                comment: "关联教师"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "students", force: :cascade do |t|
