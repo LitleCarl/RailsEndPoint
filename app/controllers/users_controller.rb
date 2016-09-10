@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  skip_before_filter :user_authenticate, only:[:sign_in]
+  skip_before_filter :user_authenticate, only:[:sign_in, :sign_up]
 
   def sign_in
     if request.method_symbol == :post
