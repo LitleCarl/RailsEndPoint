@@ -61,6 +61,9 @@ Rails.application.routes.draw do
 
         # 更新魔法棒配置
         post :update_sticker_config
+
+        # 添加魔法棒配置
+        post :create_sticker_config
       end
     end
   end
@@ -74,7 +77,7 @@ Rails.application.routes.draw do
       end
 
       collection do
-        get :create_comment
+        post :create_comment
       end
     end
 

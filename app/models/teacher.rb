@@ -93,4 +93,41 @@ class Teacher < ActiveRecord::Base
     end
     return response
   end
+
+  #
+  # 添加教师的魔法棒配置
+  #
+  # @param options [Hash]
+  # option options [teacher] :教师
+  # option options [sticker_config] :配置
+  #
+  # @return [Response, Array] 状态，评论数组
+  #
+  def self.create_sticker_config_for_api(options={})
+    sticker_config_model = nil
+    response = Response.__rescue__ do |res|
+      teacher, sticker_config = options[:teacher], options[:sticker_config]
+
+
+      res.__raise__(Response::Code::ERROR, '权限错误') if teacher.blank?
+      res.__raise__(Response::Code::ERROR, '配置错误') if sticker_config.blank?
+
+      sticker_key = sticker_config[:sticker_key]
+      value = sticker_config[:value]
+
+      res.__raise__(Response::Code::ERROR, '配置数据缺失') if sticker_key.blank? || value.blank?
+
+      sticker_exist = StickerConfig.query_first_by_options(teacher: teacher, sticker_key:sticker_key)
+
+      res.__raise__(Response::Code::ERROR, '按键已存在') if sticker_exist.present?
+
+      sticker_config_model = StickerConfig.new
+      sticker_config_model.teacher = teacher
+      sticker_config_model.sticker_key = sticker_key
+      sticker_config_model.value = value
+
+      sticker_config_model.save!
+    end
+    return response, sticker_config_model
+  end
 end

@@ -1,5 +1,38 @@
 // 用户详情页面
 var MeDetailController = function($scope, $http){
+    $scope.tempStickerConfig = {};
+
+    // 新增配置
+    $scope.CreateStickerConfig = function (sticker_config) {
+        $scope.isCreatingStickerConfig = true;
+        RequestHandler({
+            http: $http,
+            path: '/api/teachers/create_sticker_config.json',
+            method: 'post',
+            data: {
+                sticker_config: sticker_config
+            }
+        }).success(
+            function (response) {
+                if (ApiResponse.Check(response)) {
+                    $scope.sticker_configs = $scope.sticker_configs || [];
+
+                    console.log((response));
+
+                    $scope.sticker_configs.push(ApiResponse.GetData(response)['sticker_config']);
+                    $scope.tempStickerConfig = {};
+                }
+                else {
+                    alert(response['status']['message'])
+                }
+            }
+        ).finally(
+            function () {
+                $scope.isCreatingStickerConfig = false;
+            }
+        )
+    };
+
     $scope.GetComments = function () {
         $scope.isGettingComments = true;
         RequestHandler({

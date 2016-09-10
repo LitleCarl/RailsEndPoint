@@ -17,4 +17,9 @@ class Api::TeachersController < Api::ApiBaseController
     sleep(2)
     @response = Teacher.update_sticker_config_for_api(params)
   end
+
+  # 添加魔法棒配置
+  def create_sticker_config
+    @response, @sticker_config = Teacher.create_sticker_config_for_api(params)
+  end
 end

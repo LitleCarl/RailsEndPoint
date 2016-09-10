@@ -40,6 +40,14 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
                           a.btn.btn-social-icon.btn-twitter ng-show='sticker_config.isEditing' ng-click='UpdateStickerConfig(sticker_config)'
                             i.fa.fa-floppy-o
                           a.btn.btn-social-icon.btn-danger.pull-right style="line-height:34px; text-align: center;" ng-show='sticker_config.isEditing' ng-click='sticker_config.isEditing = false;' 取消
+                      tr
+                        td
+                          input.form-control placeholder=("0,1,2,3...") type="text" ng-model='tempStickerConfig.sticker_key'
+                        td
+                          input.form-control placeholder=("上课表现优秀") type="text" ng-model='tempStickerConfig.value'
+                        td
+                          a.btn.btn-social-icon.btn-danger ng-click='CreateStickerConfig(tempStickerConfig)'
+                            i.fa.fa-floppy-o
 
               .box-footer
                 .row
@@ -53,6 +61,10 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
                     .description-block
                       h5.description-header 13,000
                       span.description-text 总点赞
+
+
+              .overlay ng-show="isGettingStickerConfig || isCreatingStickerConfig"
+                i.fa.fa-refresh.fa-spin
           .col-md-4
             .info-box ng-repeat='comment in comments'
               span.info-box-icon.bg-red
