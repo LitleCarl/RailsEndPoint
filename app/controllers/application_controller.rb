@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     @user = user
     params[:user] = @user
 
-    params[:teacher] = @user.teacher
+    params[:teacher] = @user.teacher if @user.present?
   end
 
 end
