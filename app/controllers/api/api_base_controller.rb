@@ -11,8 +11,9 @@ class Api::ApiBaseController < ApplicationController
     @user = user
     params[:user] = @user
 
-    @teacher = user.teacher
-    params[:teacher] = @teacher
-
+    if @user.present? && @user.teacher.present?
+      @teacher = user.teacher
+      params[:teacher] = @teacher
+    end
   end
 end
