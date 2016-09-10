@@ -161,6 +161,11 @@ class User < ActiveRecord::Base
         res.__raise__(Response::Code::ERROR, '设备号不能为空') if device_id.blank?
         res.__raise__(Response::Code::ERROR, '学科不能为空') if subject.blank?
 
+        # 检测教师重复注册
+        teacher_exist = Teacher.query_first_by_options(device_id: device_id)
+
+        res.__raise__(Response::Code::ERROR, '此设备号已经注册过老师,不能再注册') if teacher_exist.present?
+
         user = User.new
         user.username = username
         user.password = password
