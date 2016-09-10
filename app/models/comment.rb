@@ -34,7 +34,7 @@ class Comment < ActiveRecord::Base
       res.__raise__(Response::Code::ERROR, '学生不存在') if student.blank?
       res.__raise__(Response::Code::ERROR, '老师不存在') if teacher.blank?
 
-      stick_config = StickerConfig.query_first_by_options(teacher_id: teacher.id, key: key)
+      stick_config = StickerConfig.query_first_by_options(teacher_id: teacher.id, sticker_key: key)
 
       content = stick_config.present? ? stick_config.value : '课堂表现良好'
 
