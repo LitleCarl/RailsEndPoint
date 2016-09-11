@@ -6,5 +6,6 @@ header.main-header
     span.logo-lg
       b> 上海市南桥小学
   /! Header Navbar
-  nav.navbar.navbar-static-top role="navigation"
-    |
+  nav.navbar.navbar-static-top role="navigation" style='line-height: 50px;padding-left: 30px'
+    a style='font-size:1.3em; cursor: pointer;' ng-show='selectedStudent != null' ng-click='BackToMainPage()' 返回
+    span.pull-right style='padding-right:30px;' = "今天是#{Time.now.strftime('%Y年%m月%d日')}"

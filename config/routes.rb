@@ -50,11 +50,21 @@ Rails.application.routes.draw do
     # 班级
     resources :clazzs, only: [:index]
 
+    # 语音消息
+    resources :audio_messages do
+      member do
+        # 设置已读
+        post :set_read
+      end
+    end
+
     # 老师
     resources :teachers do
       collection do
         # 获取评论
         get :comments
+
+        get :audio_messages
 
         # 获取魔法棒配置
         get :sticker_configs

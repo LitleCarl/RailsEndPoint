@@ -100,4 +100,77 @@ var MeDetailController = function($scope, $http){
             }
         )
     }
+
+    // 获取语音消息,默认未读
+    $scope.GetAudioMessages = function () {
+        $scope.isGettingAudioMessages = true;
+        RequestHandler({
+            http: $http,
+            path: '/api/teachers/audio_messages.json',
+            method: 'get'
+        }).success(
+            function (response) {
+                if (ApiResponse.Check(response)) {
+                    $scope.audio_messages = ApiResponse.GetData(response)['audio_messages'];
+                }
+            }
+        ).finally(
+            function () {
+                $scope.isGettingAudioMessages = false;
+            }
+        )
+    }
+    $scope.GetAudioMessages();
+
+    $scope.PlayAudio = function (audio_message) {
+        if ($scope.isPlaying){
+            alert('正在播放中,请稍等');
+            return;
+        }
+        if (audio_message && audio_message['audio']){
+            var au = document.createElement('audio');
+            au.setAttribute('autoplay', 'true');
+            au.controls = true;
+            au.src = audio_message['audio'];
+            $scope.isPlaying = true;
+
+            au.addEventListener("timeupdate", function() {
+                var currentTime = au.currentTime;
+                var duration = au.duration;
+                var ratio = (currentTime / duration) * 100;
+
+                if (ratio >= 100){
+                    $scope.isPlaying = false;
+                    $scope.$apply();
+                }
+            });
+        }
+        else {
+            alert('语音文件不存在')
+        }
+    }
+    
+    $scope.SetReaded = function (audio_message) {
+        $scope.isSettingAudioMessagesReaded = true;
+        RequestHandler({
+            http: $http,
+            path: '/api/audio_messages/'+audio_message.id+'/set_read.json',
+            method: 'post'
+        }).success(
+            function (response) {
+                if (ApiResponse.Check(response)) {
+                    $scope.audio_messages =  _.filter( $scope.audio_messages, function(audio_message) {
+                        return audio_message != audio_message;
+                    });
+                }
+                else {
+                    alert('网络错误')
+                }
+            }
+        ).finally(
+            function () {
+                $scope.isSettingAudioMessagesReaded = false;
+            }
+        )
+    }
 };

@@ -32,7 +32,8 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowContro
                         br
                         span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
                         span.info-box-text.pull-right ng-bind='comment.show_time'
-
+                    div ng-show='comments == null || comments.length < 1' style='text-align:center;'
+                      | 今天还未点过赞哦
           /! /.info-box-content
           .col-md-5
             .info-box.bg-green

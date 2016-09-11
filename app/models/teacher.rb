@@ -25,8 +25,11 @@ class Teacher < ActiveRecord::Base
   # 关联魔法棒配置
   has_many :sticker_configs
 
+  # 关联语音消息
+  has_many :audio_messages
+
   #
-  # 获取教师的评论
+  # 获取教师的今日评论
   #
   # @param options [Hash]
   # option options [teacher] :教师
@@ -42,7 +45,7 @@ class Teacher < ActiveRecord::Base
 
       res.__raise__(Response::Code::ERROR, '参数错误') if teacher.blank?
 
-      comments = teacher.comments.order('created_at DESC').page(page).per(limit)
+      comments = teacher.comments.where('created_at >= ?', Time.now.beginning_of_day).order('created_at DESC').page(page).per(limit)
     end
     return response, comments
   end
@@ -143,6 +146,16 @@ class Teacher < ActiveRecord::Base
   # @return [Response, Array] 状态，评论数组
   #
   def self.query_audio_messages_with_options(options={})
-    
+    audio_messages = []
+    response = Response.__rescue__ do |res|
+      teacher, unread, page, limit = options[:teacher], options[:unread], options[:page], options[:limit]
+
+      res.__raise__(Response::Code::ERROR, '参数错误') if teacher.blank?
+
+      unread = true if unread.blank?
+
+      audio_messages = teacher.audio_messages.where(readed: !unread).order('created_at DESC').page(page).limit(limit)
+    end
+    return response, audio_messages
   end
 end

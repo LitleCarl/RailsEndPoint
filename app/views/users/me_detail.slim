@@ -66,7 +66,7 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
               .overlay ng-show="isGettingStickerConfig || isCreatingStickerConfig"
                 i.fa.fa-refresh.fa-spin
           .col-md-4
-            #room-rightbar.nav-tabs-custom style="overflow-y: scroll;"
+            #room-rightbar.nav-tabs-custom
               ul.nav.nav-tabs
                 li.active
                   a aria-expanded="true" data-toggle="tab" href="#comments"  今日点赞
@@ -86,9 +86,19 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
                       br
                       span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
                       span.info-box-text.pull-right ng-bind='comment.show_time'
+                  div ng-show='comments == null || comments.length < 1' style='text-align:center;'
+                    |今天还未点过赞哦
                 #audio-messages.tab-pane
-
-
+                  .info-box ng-repeat='audio_message in audio_messages'
+                    span.info-box-icon.bg-red ng-click='PlayAudio(audio_message)' style='cursor:pointer'
+                      i.fa.fa-file-audio-o
+                    .info-box-content
+                      button.pull-right ng-click='SetReaded(audio_message)' 设为已读
+                      span.info-box-number
+                        span.text-info ng-bind='audio_message.student.name'
+                        span 发来了一条语音消息, 点击喇叭收听
+                  div ng-show='audio_messages == null || audio_messages.length < 1' style='text-align:center;'
+                    |暂无未读消息哦
 
     == include_slim 'app/views/common/footer'
     == include_slim 'app/views/common/control'

@@ -1,17 +1,16 @@
 var BoardClazzShowController = function($scope, $http, $attrs){
 
-    //// 初始化Socket.io
-    //var socket = io(window.appHost.replace(/:[0-9]{1,5}$/, '')+':3001/board');
-    //socket.on('NewComment', function (clazz_id) {
-    //    $scope.GetComments()
-    //});
-    //
-    //$(document).on('turbolinks:before-visit', function(){
-    //    socket.disconnect();
-    //});
+    // 初始化Socket.io
+    var socket = io(window.appHost.replace(/:[0-9]{1,5}$/, '')+':3001/board');
+    socket.on('NewComment', function (clazz_id) {
+        $scope.GetComments()
+    });
+
+    $(document).on('turbolinks:before-visit', function(){
+        socket.disconnect();
+    });
 
     $scope.clazzId = $attrs.clazzid
-    console.log('clazzid:', $attrs.clazzid);
     $scope.selectedStudent = null;
 
     $scope.SelectStudent = function (stu) {
@@ -23,6 +22,12 @@ var BoardClazzShowController = function($scope, $http, $attrs){
         $scope.ResetRecordStatus();
         $scope.selectedTeacher = teacher;
     };
+
+    $scope.BackToMainPage = function () {
+        $scope.ResetRecordStatus();
+        $scope.selectedTeacher = null;
+        $scope.selectedStudent = null;
+    }
 
     $scope.GetStudents = function(){
         $scope.isLoadingForGetStudents = true;
@@ -102,20 +107,22 @@ var BoardClazzShowController = function($scope, $http, $attrs){
         window.URL = window.URL || window.webkitURL;
 
         audio_context = new AudioContext;
+
+        navigator.getUserMedia({audio: true}, function startUserMedia(stream) {
+            var input = audio_context.createMediaStreamSource(stream);
+            recorder = new Recorder(input);
+        }, function(e) {
+            alert('无音频输入设备');
+        });
     } catch (e) {
-        alert('No web audio support in this browser!');
+        alert('为了使用语音录音功能,请切换Chrome浏览器获得最佳体验!');
     }
 
-    navigator.getUserMedia({audio: true}, function startUserMedia(stream) {
-        var input = audio_context.createMediaStreamSource(stream);
-        recorder = new Recorder(input);
-    }, function(e) {
-        alert('无音频输入设备');
-    });
-
-
-
     $scope.StartRecording = function() {
+        if (!navigator.getUserMedia){
+            return alert('请切换Chrome浏览器');
+        }
+
         recorder && recorder.record();
         $scope.recordStatus.isRecording = true;
         $scope.recordStatus.startTime = new Date();
