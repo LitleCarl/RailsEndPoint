@@ -123,6 +123,8 @@ var BoardClazzShowController = function($scope, $http, $attrs){
             return alert('请切换Chrome浏览器');
         }
 
+        recorder && recorder.clear();
+
         recorder && recorder.record();
         $scope.recordStatus.isRecording = true;
         $scope.recordStatus.startTime = new Date();
@@ -187,10 +189,8 @@ var BoardClazzShowController = function($scope, $http, $attrs){
             $scope.recordStatus.isRecording = false;
             $scope.$apply();
             console.log('blob:', blob)
-            recorder.clear();
-
         });
-    }
+    };
     
     $scope.SendWavSound = function () {
         var fd = new FormData();
