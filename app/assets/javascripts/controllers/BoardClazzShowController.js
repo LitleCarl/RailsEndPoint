@@ -1,7 +1,7 @@
 var BoardClazzShowController = function($scope, $http, $attrs){
 
     // 初始化Socket.io
-    var socket = io(window.appHost.replace('https', 'http').replace(/:[0-9]{1,5}$/, '')+':3001/board');
+    var socket = io(window.appHost.replace(/:[0-9]{1,5}$/, '')+':3002/board');
     socket.on('NewComment', function (clazz_id) {
         $scope.GetComments()
     });
