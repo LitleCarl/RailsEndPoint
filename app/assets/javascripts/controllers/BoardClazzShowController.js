@@ -187,8 +187,9 @@ var BoardClazzShowController = function($scope, $http, $attrs){
             $scope.recordStatus.isRecording = false;
             $scope.$apply();
             console.log('blob:', blob)
+            recorder.clear();
+
         });
-        recorder.clear();
     }
     
     $scope.SendWavSound = function () {
