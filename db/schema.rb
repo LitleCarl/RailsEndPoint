@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909094939) do
+ActiveRecord::Schema.define(version: 20160911063223) do
+
+  create_table "audio_messages", force: :cascade do |t|
+    t.integer  "teacher_id", limit: 4,                                comment: "关联教师"
+    t.integer  "student_id", limit: 4,                                comment: "关联学生"
+    t.string   "audio",      limit: 255,                              comment: "音频地址"
+    t.boolean  "readed",                 default: false,              comment: "已读"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
   create_table "clazzs", force: :cascade do |t|
     t.string   "grade",      limit: 255,              comment: "年级"

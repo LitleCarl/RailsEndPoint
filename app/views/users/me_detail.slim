@@ -66,23 +66,29 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
               .overlay ng-show="isGettingStickerConfig || isCreatingStickerConfig"
                 i.fa.fa-refresh.fa-spin
           .col-md-4
-            .info-box ng-repeat='comment in comments'
-              span.info-box-icon.bg-red
-                i.fa.fa-star-o
-              .info-box-content
-                span.info-box-number
-                  span.text-info ng-bind='comment.student.name'
-                  span ng-bind="'同学因为' + comment.content + '得到了一个赞'"
-                br
-                br
-                span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
-                span.info-box-text.pull-right ng-bind='comment.show_time'
-    /! /.description-block
-    /! /.col
-    /! /.row
-    /! /.widget-user
+            #room-rightbar.nav-tabs-custom style="overflow-y: scroll;"
+              ul.nav.nav-tabs
+                li.active
+                  a aria-expanded="true" data-toggle="tab" href="#comments"  今日点赞
+                li
+                  a aria-expanded="false" data-toggle="tab" href="#audio-messages"  语音消息
 
-    /! /.box-body
+              .tab-content
+                #comments.tab-pane.active
+                  .info-box ng-repeat='comment in comments'
+                    span.info-box-icon.bg-red
+                      i.fa.fa-star-o
+                    .info-box-content
+                      span.info-box-number
+                        span.text-info ng-bind='comment.student.name'
+                        span ng-bind="'同学因为' + comment.content + '得到了一个赞'"
+                      br
+                      br
+                      span ng-bind="comment.teacher.subject+'老师: ' + comment.teacher.name"
+                      span.info-box-text.pull-right ng-bind='comment.show_time'
+                #audio-messages.tab-pane
+
+
 
     == include_slim 'app/views/common/footer'
     == include_slim 'app/views/common/control'

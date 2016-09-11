@@ -19,4 +19,14 @@ class Board::ClazzsController < Board::BoardBaseController
     @response = Comment.create_with_options(params)
   end
 
+  # 获取所有教师的接口
+  def teachers
+    @response, @teachers = Response.default_success, Teacher.all
+  end
+
+  # 创建语音消息
+  def create_audio_message
+    @response = AudioMessage.create_with_options(params)
+  end
+
 end

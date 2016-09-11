@@ -73,11 +73,17 @@ Rails.application.routes.draw do
       member do
         get :students_list
         get :comments
-
       end
 
       collection do
+        # 创建评论
         post :create_comment
+
+        # 创建语音信息
+        post :create_audio_message
+
+        # 获取教师列表接口
+        get :teachers
       end
     end
 

@@ -1,17 +1,18 @@
-body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowController'
+body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowController' data-clazzid=(@clazz.id)
   .wrapper
     /! Main Header
     /! Left side column. contains the logo and sidebar
+    == include_slim 'app/views/board/common/nav'
     == include_slim 'app/views/board/common/sidebar'
     .content-wrapper
       /! Content Header (Page header)
       section.content-header
       /! Main content
       section.content
-        .row
+        .row ng-show='selectedStudent == null'
           /.col-md-4
 
-          .col-md-9
+          .col-md-7
             .row
               .col-md-12
                 .box.box-danger
@@ -33,7 +34,7 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowContro
                         span.info-box-text.pull-right ng-bind='comment.show_time'
 
           /! /.info-box-content
-          .col-md-3
+          .col-md-5
             .info-box.bg-green
               span.info-box-icon
                 i.fa.fa-thumbs-o-up
@@ -43,3 +44,71 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardClazzShowContro
                 .progress
                   .progress-bar style=("width: 70%")
                 span.progress-description ng-bind="'今天一共点了'+comments.length + '个赞~\(≧▽≦)/~'"
+        .row ng-show='selectedStudent != null'
+          .col-md-8
+            .box.box-widget.widget-user
+              /! Add the bg color to the header using any of the bg-* classes
+              .widget-user-header.bg-aqua-active
+                h3.widget-user-username ng-bind='selectedStudent.name'
+                h5.widget-user-desc
+                  |{{'学号: '+(selectedStudent.number || '无')}}
+                h5.widget-user-desc
+                  |{{'手环id: '+(selectedStudent.device_id || '未设置')}}
+              .widget-user-image style='z-index:900'
+                img.img-circle alt=("User Avatar") src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user1-128x128.jpg" /
+
+              row
+                .col-md-12  style='padding:50px 30px;background: #f5f5f5;'
+                  .box.box-success.direct-chat.direct-chat-success ng-show='selectedTeacher != null && selectedStudent != null'
+                    .box-header.with-border
+                      h3.box-title 给{{selectedTeacher.name}}老师留言
+                    /! /.box-header
+                    .box-body
+
+                    .box-footer#recording_area style='text-align:center;'
+                      a.btn.btn-app ng-click='StartRecording()' ng-show='!recordStatus.isRecording && recordStatus.wavBlob == null'
+                        i.fa.fa-play
+                        | 开始录音
+                      a.btn.btn-app ng-click='StopRecording()' ng-show='recordStatus.isRecording && recordStatus.wavBlob == null'
+                        i.fa.fa-pause
+                        | {{'停止(' + GetRecordSeconds() + '秒)'}}
+                      a.btn.btn-app ng-click='PlayWav()' ng-show='!recordStatus.isRecording && recordStatus.wavBlob != null'
+                        i.fa.fa-pause
+                        | 试听
+                      a.btn.btn-app ng-click='SendWavSound()' ng-show='!recordStatus.isRecording && recordStatus.wavBlob != null'
+                        i.fa.fa-send
+                        | 发送
+                      a.btn.btn-app ng-click='ResetRecordStatus()' ng-show='!recordStatus.isRecording && recordStatus.wavBlob != null'
+                        i.fa.fa-undo
+                        | 取消
+                      .progress.progress-sm.active style='margin-bottom: 0px' ng-show='recordStatus.isPlaying'
+                        .progress-bar.progress-bar-success.progress-bar-striped#play_progress role="progressbar" style=("width: 0%")
+
+              .box-footer
+                .row
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 3,200
+                      span.description-text 今日点赞数
+                  /! /.description-block
+                  /! /.col
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 13,000
+                      span.description-text 最近一周点赞数
+          .col-md-4
+            .box.box-widget
+              .box-header.with-border
+                | 教师列表
+              .box-body
+                .user-block ng-repeat='teacher in teachers' style='margin-top: 10px;'
+                  img.img-circle alt=("User Image") src="https://almsaeedstudio.com/themes/AdminLTE/dist/img/user1-128x128.jpg" /
+                  span.username
+                    a ng-click='SelectTeacher(teacher)'
+                      |{{teacher.name}}
+                  span.description
+                    | {{teacher.subject}}
+
+    /! /.box-footer
+    /! /.direct-chat
+    == include_slim 'app/views/common/footer'

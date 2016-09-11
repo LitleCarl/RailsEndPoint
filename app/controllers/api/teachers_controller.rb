@@ -19,4 +19,9 @@ class Api::TeachersController < Api::ApiBaseController
   def create_sticker_config
     @response, @sticker_config = Teacher.create_sticker_config_for_api(params)
   end
+
+  # 获取用户消息
+  def audio_messages
+    @response, @audio_messages = Teacher.query_audio_messages_with_options(params)
+  end
 end

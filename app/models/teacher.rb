@@ -130,4 +130,19 @@ class Teacher < ActiveRecord::Base
     end
     return response, sticker_config_model
   end
+
+  #
+  # 获取教师的语音消息
+  #
+  # @param options [Hash]
+  # option options [teacher] :教师
+  # option options [unread] :是否已读, 可选,默认为true
+  # option options [page] :页数,可选
+  # option options [limit] :每页数量,可选
+  #
+  # @return [Response, Array] 状态，评论数组
+  #
+  def self.query_audio_messages_with_options(options={})
+    
+  end
 end

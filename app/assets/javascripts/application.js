@@ -22,6 +22,7 @@
 //= require lodash
 //= require app
 //= require iCheck
+//= require recorder/recorder
 //= require_tree .
 
 var mainModule;
@@ -79,7 +80,7 @@ $(document).on('turbolinks:load', function () {
         mainModule.controller('FloorIndexController', ['$scope', '$http', FloorIndexController]);
         mainModule.controller('FloorShowController', ['$scope', '$http', '$attrs', FloorShowController]);
         mainModule.controller('ClazzIndexController', ['$scope', '$http', ClazzIndexController]);
-        mainModule.controller('BoardClazzShowController', ['$scope', '$http', BoardClazzShowController]);
+        mainModule.controller('BoardClazzShowController', ['$scope', '$http', '$attrs', BoardClazzShowController]);
         mainModule.controller('MeDetailController', ['$scope', '$http', MeDetailController]);
 
         // 自定义功能
@@ -103,7 +104,6 @@ $(document).ready(function(){
     // Fix样式问题
     $(document).on('turbolinks:load', function () {
         $.AdminLTE.layout.fix();
-
         $('input').iCheck({
             checkboxClass: 'icheckbox_flat-blue',
             radioClass: 'iradio_square-blue',

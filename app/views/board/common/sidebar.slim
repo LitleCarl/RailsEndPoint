@@ -1,8 +1,8 @@
-aside.main-sidebar style='background-color: white; padding-top: 0;'
+aside.main-sidebar style='background-color: white;'
   section.sidebar
     .box.box-widget.widget-user
       /! Add the bg color to the header using any of the bg-* classes
-      .widget-user-header.bg-aqua-active
+      .widget-user-header.bg-aqua-active style='border-radius: 0;'
         h3.widget-user-username = "#{@clazz.grade}(#{@clazz.number})班"
         br
         h5.widget-user-desc ng-bind="'班级总人数:'+ students.length"
@@ -11,6 +11,6 @@ aside.main-sidebar style='background-color: white; padding-top: 0;'
       .box-footer.no-padding
         ul.nav.nav-stacked
           li ng-repeat='student in students'
-            a href="#"
+            a  ng-click='SelectStudent(student)'
               | {{student.name}}
               i.fa.fa-circle.pull-right ng-class='{true: "text-teal", false: ""}[student.online]'
