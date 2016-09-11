@@ -22,7 +22,6 @@
 //= require lodash
 //= require app
 //= require iCheck
-//= require recorder/recorder
 //= require_tree .
 
 var mainModule;
