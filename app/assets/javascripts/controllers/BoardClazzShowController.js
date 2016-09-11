@@ -102,9 +102,9 @@ var BoardClazzShowController = function($scope, $http, $attrs){
 
     try {
         // webkit shim
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-        window.URL = window.URL || window.webkitURL;
+        window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        window.URL = window.URL || window.webkitURL || window.mozURL;
 
         audio_context = new AudioContext;
 
