@@ -159,8 +159,8 @@ var MeDetailController = function($scope, $http){
         }).success(
             function (response) {
                 if (ApiResponse.Check(response)) {
-                    $scope.audio_messages =  _.filter( $scope.audio_messages, function(audio_message) {
-                        return audio_message != audio_message;
+                    $scope.audio_messages =  _.filter( $scope.audio_messages, function(au) {
+                        return au != audio_message;
                     });
                 }
                 else {
