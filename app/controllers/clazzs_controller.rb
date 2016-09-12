@@ -4,4 +4,9 @@ class ClazzsController < ApplicationController
 
   end
 
+  # 新建班级
+  def new
+
+  end
+
 end
