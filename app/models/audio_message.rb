@@ -14,7 +14,7 @@
 class AudioMessage < ActiveRecord::Base
 
   # 挂载图片
-  mount_uploader :audio, CadUploader
+  mount_uploader :audio, AudioUploader
 
   # 通用查询方法
   include Concerns::Query::Methods
