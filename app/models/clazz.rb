@@ -39,4 +39,35 @@ class Clazz < ActiveRecord::Base
 
     return response, clazzs
   end
+
+  #
+  # 更新班级信息
+  #
+  # @param options [Hash] options
+  # option options [grade] :年级
+  # option options [number] :班号
+  # option options [room_id] :房间id
+  # option options [id] :班级id
+  #
+  # @return [Response, Array] 状态，基站列表
+  #
+  def self.update_with_options_for_api(options={})
+    response = Response.__rescue__ do |res|
+      grade, number, room_id, clazz_id = options[:grade], options[:number], options[:room_id], options[:id]
+
+      res.__raise__(Response::Code::ERROR, '参数错误') if clazz_id.blank?
+
+      clazz = Clazz.query_first_by_id clazz_id
+
+      res.__raise__(Response::Code::ERROR, '班级不存在') if clazz.blank?
+
+      clazz.grade = grade if grade.present?
+      clazz.number = number if number.present?
+      clazz.room_id = room_id if room_id.present?
+
+      clazz.save!
+    end
+
+    return response
+  end
 end

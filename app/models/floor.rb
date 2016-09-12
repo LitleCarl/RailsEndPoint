@@ -57,6 +57,27 @@ class Floor < ActiveRecord::Base
   end
 
   #
+  # 获取楼层的所有房间
+  #
+  # @param options [Hash]
+  #
+  # @return [Response, Array] 状态，房间数组
+  #
+  def self.query_rooms_in_floor_for_api(options={})
+    rooms = []
+    response = Response.__rescue__ do |res|
+      id = options[:id]
+      floor = Floor.query_first_by_id id
+
+      res.__raise__(Response::Code::ERROR, '楼层不存在') if floor.blank?
+
+      rooms = floor.rooms
+    end
+
+    return response, rooms
+  end
+
+  #
   # 为楼层添加走道/房间
   #
   # @param options [Hash]

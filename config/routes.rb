@@ -41,6 +41,9 @@ Rails.application.routes.draw do
     resources :floors, only: [:index, :show] do
       member do
         post :create_room
+
+        # 获取楼层房间
+        get :rooms
       end
     end
 
@@ -48,7 +51,7 @@ Rails.application.routes.draw do
     resources :stations, only: [:update]
 
     # 班级
-    resources :clazzs, only: [:index]
+    resources :clazzs, only: [:index, :update]
 
     # 语音消息
     resources :audio_messages do

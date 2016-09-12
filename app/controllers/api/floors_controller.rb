@@ -12,4 +12,8 @@ class Api::FloorsController < Api::ApiBaseController
     @response = Floor.create_room_with_options(params)
   end
 
+  def rooms
+    @response, @rooms = Floor.query_rooms_in_floor_for_api(params)
+  end
+
 end
