@@ -81,6 +81,7 @@ $(document).on('turbolinks:load', function () {
         mainModule.controller('ClazzIndexController', ['$scope', '$http', ClazzIndexController]);
         mainModule.controller('BoardClazzShowController', ['$scope', '$http', '$attrs', BoardClazzShowController]);
         mainModule.controller('MeDetailController', ['$scope', '$http', MeDetailController]);
+        mainModule.controller('ClazzNewController', ['$scope', '$http', ClazzNewController]);
 
         // 自定义功能
         // ng-src图片加载完成

@@ -1,0 +1,53 @@
+body.hold-transition.skin-black.sidebar-mini ng-controller='ClazzNewController'
+  .wrapper
+    /! Main Header
+    == include_slim 'app/views/common/nav'
+    == include_slim 'app/views/common/sidebar'
+
+    /! /.sidebar-menu
+    /! /.sidebar
+    /! Content Wrapper. Contains page content
+    .content-wrapper
+
+      /! Main content
+      section.content
+        .row
+          .col-md-12
+            .register-box
+              .register-box-body
+                p.login-box-msg 添加班级
+                - if @response && !@response.is_successful?
+                  p.login-box-msg
+                    .alert.alert-warning.alert-dismissible
+                      button.close aria-hidden="true" data-dismiss="alert" type="button"  ×
+                      i.icon.fa.fa-warning = @response.message
+                .form-group.has-feedback
+                  input.form-control placeholder=("一年级") type="text" name="grade" ng-model='grade'
+                .form-group.has-feedback
+                  input.form-control placeholder=("班级号码:1,2,3...") type="text" name="number" ng-model='number'
+                .form-group
+                  h5 所在楼层
+                  .btn-group
+                    button.btn.btn-info type="button" {{selectedFloor.name || '请选择'}}
+                    button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                      span.caret
+                      span.sr-only Toggle Dropdown
+                    ul.dropdown-menu
+                      li ng-repeat='floor in floors'
+                        a ng-click='SelectFloor(floor)' {{floor.name}}
+                .form-group ng-show='selectedFloor != null'
+                  h5 所在房间
+                  .btn-group
+                    button.btn.btn-info type="button" ng-disabled='!(rooms && rooms.length > 0)'  {{selectedRoom.name || '请选择'}}
+                    button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" ng-disabled='!(rooms && rooms.length > 0)'
+                      span.caret
+                      span.sr-only Toggle Dropdown
+                    ul.dropdown-menu
+                      li ng-repeat='room in rooms'
+                        a ng-click='SelectRoom(room)' {{room.name}}
+                .row
+                  .col-xs-4.col-xs-offset-4
+                    button.btn.btn-primary.btn-block.btn-flat ng-click='AddClazz()' ng-disabled='!(selectedFloor != null && selectedRoom != null && grade != null && number != null)'  注册
+
+    == include_slim 'app/views/common/footer'
+    == include_slim 'app/views/common/control'

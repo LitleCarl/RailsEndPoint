@@ -51,7 +51,7 @@ Rails.application.routes.draw do
     resources :stations, only: [:update]
 
     # 班级
-    resources :clazzs, only: [:index, :update]
+    resources :clazzs, only: [:index, :update, :create]
 
     # 语音消息
     resources :audio_messages do
