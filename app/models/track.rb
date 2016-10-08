@@ -21,6 +21,9 @@ class Track < ActiveRecord::Base
   # 所属学生
   belongs_to :student
 
+  # Rollback方案, payload全由Track生成, 有且一次只有一条payload
+  after_create :create_payload
+
   #
   # 定位数据添加接口
   #
@@ -51,5 +54,10 @@ class Track < ActiveRecord::Base
       track.extra = extra if extra.present?
       track.save!
     end
+  end
+
+  # 创建Payload
+  def create_payload
+  
   end
 end
