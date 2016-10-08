@@ -45,6 +45,11 @@ Rails.application.routes.draw do
         # 获取楼层房间
         get :rooms
       end
+
+      collection do
+        # 所有楼层->所有房间->房间内的基站 隐射表
+        get :station_mapping
+      end
     end
 
     # 基站数据更新
@@ -79,9 +84,21 @@ Rails.application.routes.draw do
         post :create_sticker_config
       end
     end
+
+    # 轨迹
+    resources :tracks, only: [:create]
   end
 
   namespace :board do
+    # 养老院
+    resources :nursing_home, only: [:index] do
+      collection do
+        # 获取页面数据
+        get :page_data
+      end
+    end
+
+    # 班级
     resources :clazzs, only: [:index, :show] do
       member do
         get :students_list

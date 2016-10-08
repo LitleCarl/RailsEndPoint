@@ -65,7 +65,7 @@ module Concerns::Board::ClazzConcern
                                                                     LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
                                                                     LEFT JOIN `students` stu ON (p1.`student_id` = stu.id)
                                                                     LEFT JOIN `clazzs` clazz ON (clazz.id = stu.`clazz_id`)
-                                                                    WHERE  p2.`id` IS NULL AND stu.`id` IS NOT NULL AND clazz.id = 1 AND p1.`created_at` >= '#{from_time}'")
+                                                                    WHERE  p2.`id` IS NULL AND stu.`id` IS NOT NULL AND clazz.id = #{clazz_id} AND p1.`created_at` >= '#{from_time}'")
         result.each do|row|
           online_student_ids << row[0]
         end
