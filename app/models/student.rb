@@ -23,4 +23,12 @@ class Student < ActiveRecord::Base
 
   # 所属班级
   belongs_to :clazz
+
+  # 轨迹
+  has_many :tracks
+
+  # 学生今日的轨迹
+  def self.tracks_of_today
+    return self.tracks.where('created_at > ?', Time.now.beginning_of_day)
+  end
 end

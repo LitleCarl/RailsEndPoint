@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160911063223) do
+ActiveRecord::Schema.define(version: 20161008015339) do
 
   create_table "audio_messages", force: :cascade do |t|
     t.integer  "teacher_id", limit: 4,                                comment: "关联教师"
@@ -97,6 +97,15 @@ ActiveRecord::Schema.define(version: 20160911063223) do
     t.string   "subject",    limit: 255,              comment: "学科"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.text     "location",   limit: 65535, null: false, comment: "定位坐标json,比如[0.331, 0.455], 相对于room所属的floor"
+    t.integer  "student_id", limit: 4,     null: false, comment: "学生id"
+    t.integer  "room_id",    limit: 4,                  comment: "定位所在房间"
+    t.text     "extra",      limit: 65535,              comment: "其他信息(JSON)"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade do |t|

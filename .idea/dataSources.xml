@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1762869825">
+  <component name="DataSourceManagerImpl" format="xml" hash="2806008097">
     <data-source source="LOCAL" name="MySQL - edu_db@zaocantest.mysql.rds.aliyuncs.com" uuid="e5794b4c-f675-4c2b-b32c-d84fcb97d8da">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>

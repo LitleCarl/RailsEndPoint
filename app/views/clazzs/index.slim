@@ -45,48 +45,68 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='ClazzIndexController
               .overlay ng-show="isLoadingForGetClazzs"
                 i.fa.fa-refresh.fa-spin
           .col-md-4 ng-show="SelectedClazz != null"
-            .box.box-info
-              .box-header.with-border
-                h3.box-title 班级详情
+            .nav-tabs-custom
+              ul.nav.nav-tabs
+                li.active
+                  a data-toggle="tab" href="#clazz_detail"  班级详情
+                li
+                  a data-toggle="tab" href="#students_list"  学生
 
-              /! /.box-header
-              .box-body style=("display: block;")
-                .form-group
-                  label 年级
-                  .input-group
-                    .input-group-addon
-                      i.fa.fa-database
-                    input.form-control data-mask="" type="text" ng-model='SelectedClazz.copyClazz.grade'
-                  .form-group
-                    label 班号
-                    .input-group
-                      .input-group-addon
-                        i.fa.fa-sort-numeric-desc
-                      input.form-control data-mask="" type="text" ng-model='SelectedClazz.copyClazz.number'
-                  .form-group
-                    label 楼层/房间选择
-                    .input-group
-                      .btn-group
-                        button.btn.btn-info type="button"  {{SelectedClazz.copyClazz.floor.name}}
-                        button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-                          span.caret
-                          span.sr-only Toggle Dropdown
-                        ul.dropdown-menu
-                          li ng-repeat='floor in floors'
-                            a ng-click='SetFloorIDForClazz(floor)' {{floor.name}}
-                      .btn-group
-                        button.btn.btn-info type="button" ng-disabled='!(rooms && rooms.length > 0)'  {{SelectedClazz.copyClazz.room.name || '请选择'}}
-                        button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" ng-disabled='!(rooms && rooms.length > 0)'
-                          span.caret
-                          span.sr-only Toggle Dropdown
-                        ul.dropdown-menu
-                          li ng-repeat='room in rooms'
-                            a ng-click='SelectRoomForClazz(room)' {{room.name}}
+              .tab-content
+                #clazz_detail.tab-pane.active
+                  .box.box-info style='border-top-color: transparent;'
+                    /! /.box-header
+                    .box-body style=("display: block;")
+                      .form-group
+                        label 年级
+                        .input-group
+                          .input-group-addon
+                            i.fa.fa-database
+                          input.form-control data-mask="" type="text" ng-model='SelectedClazz.copyClazz.grade'
+                        .form-group
+                          label 班号
+                          .input-group
+                            .input-group-addon
+                              i.fa.fa-sort-numeric-desc
+                            input.form-control data-mask="" type="text" ng-model='SelectedClazz.copyClazz.number'
+                        .form-group
+                          label 楼层/房间选择
+                          .input-group
+                            .btn-group
+                              button.btn.btn-info type="button"  {{SelectedClazz.copyClazz.floor.name}}
+                              button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+                                span.caret
+                                span.sr-only Toggle Dropdown
+                              ul.dropdown-menu
+                                li ng-repeat='floor in floors'
+                                  a ng-click='SetFloorIDForClazz(floor)' {{floor.name}}
+                            .btn-group
+                              button.btn.btn-info type="button" ng-disabled='!(rooms && rooms.length > 0)'  {{SelectedClazz.copyClazz.room.name || '请选择'}}
+                              button.btn.btn-info.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button" ng-disabled='!(rooms && rooms.length > 0)'
+                                span.caret
+                                span.sr-only Toggle Dropdown
+                              ul.dropdown-menu
+                                li ng-repeat='room in rooms'
+                                  a ng-click='SelectRoomForClazz(room)' {{room.name}}
 
-              .box-footer.clearfix style=("display: block;")
-                a.btn.btn-sm.btn-success.btn-flat.pull-left ng-click='UpdateClazz()' 保存
-              .overlay ng-show="isLoadingForGetClazzs"
-                i.fa.fa-refresh.fa-spin
+                    .box-footer.clearfix style=("display: block;")
+                      a.btn.btn-sm.btn-success.btn-flat.pull-left ng-click='UpdateClazz()' 保存
+                    .overlay ng-show="isLoadingForGetClazzs"
+                      i.fa.fa-refresh.fa-spin
+                /! /.tab-pane
+                #students_list.tab-pane
+                  .box.box-info style='border-top-color: transparent;'
+                    ul.nav.nav-stacked
+                      li ng-repeat='student in students'
+                        a ng-click='SelectStudent(student)'
+                          | {{student.name}}
+                          i.fa.fa-circle.pull-right ng-class='{true: "text-teal", false: ""}[student.online]'
+                    .box-footer.clearfix style=("display: block;")
+                      a.btn.btn-sm.btn-success.btn-flat.pull-left ng-click='' 添加学生
+            /! /.tab-pane
+            /! /.tab-content
+
+
     /! /.box-body
 
     == include_slim 'app/views/common/footer'

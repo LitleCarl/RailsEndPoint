@@ -61,6 +61,8 @@ var ClazzIndexController = function($scope, $http){
             grade: clazz.grade,
             number: clazz.number
         };
+
+        $scope.GetStudents(clazz);
     };
 
     // 班级更换楼层
@@ -121,7 +123,22 @@ var ClazzIndexController = function($scope, $http){
         }).finally(function () {
             $scope.isUpdatingClazz = false;
         });
+    };
 
-
-    }
+    // 获取班级下的学生
+    $scope.GetStudents = function(clazz){
+        $scope.students = [];
+        $scope.isLoadingForGetStudents = true;
+        RequestHandler({
+            http: $http,
+            path: '/board/clazzs/'+clazz.id+'/students_list.json',
+            method: 'get'
+        }).success(function (response) {
+            if (ApiResponse.Check(response)) {
+                $scope.students = ApiResponse.GetData(response)['students'];
+            }
+        }).finally(function () {
+            $scope.isLoadingForGetStudents = false;
+        });
+    };
 };
