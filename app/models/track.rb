@@ -21,15 +21,12 @@ class Track < ActiveRecord::Base
   # 所属学生
   belongs_to :student
 
-  # Rollback方案, payload全由Track生成, 有且一次只有一条payload
-  after_create :create_payload
-
   #
   # 定位数据添加接口
   #
   # @param options [Hash]
-  # option options [room_id] :所属房间id
-  # option options [device_id] :手环设备id
+  # option options [station_device_id] :基站设备id
+  # option options [bracelet_device_id] :手环设备id
   # option options [location] :基站新的坐标
   # option options [extra] :额外信息, 可选
   #
@@ -37,27 +34,33 @@ class Track < ActiveRecord::Base
   #
   def self.create_with_options(options={})
     response = Response.__rescue__ do |res|
-      room_id, device_id, location, extra = options[:room_id], options[:device_id], options[:location], options[:extra]
+      station_device_id, bracelet_device_id, location, extra = options[:station_device_id], options[:bracelet_device_id], options[:location], options[:extra]
 
-      res.__raise__(Response::Code::ERROR, '参数错误') if room_id.blank? || device_id.blank? || location.blank?
+      res.__raise__(Response::Code::ERROR, '参数错误') if station_device_id.blank? || bracelet_device_id.blank? || location.blank?
 
-      room = Room.query_first_by_id room_id
-      student = Student.query_first_by_options(device_id: device_id)
+      station = Station.query_first_by_options(device_id: station_device_id)
+      student = Student.query_first_by_options(device_id: bracelet_device_id)
 
-      res.__raise__(Response::Code::ERROR, '房间不存在') if room.blank?
+      res.__raise__(Response::Code::ERROR, '基站不存在') if station.blank?
       res.__raise__(Response::Code::ERROR, '学生不存在') if student.blank?
+      res.__raise__(Response::Code::ERROR, '房间不存在') if station.room.blank?
 
       track = Track.new
-      track.room = room
+      track.room = station.room
       track.student = student
       track.location = location
       track.extra = extra if extra.present?
       track.save!
+
+      # 创建Payload
+      # Rollback方案, payload全由Track生成, 有且一次只有一条payload
+      data = [{
+                  bracelet_device_id: bracelet_device_id,
+                  station_device_id: station_device_id
+              }]
+
+      Payload.create_with_options(data: data)
     end
   end
 
-  # 创建Payload
-  def create_payload
-  
-  end
 end

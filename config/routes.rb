@@ -11,12 +11,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :seeds do
-    collection do
-      post :create_payload
-    end
-  end
-
   # 楼层
   resources :floors, only: [:index, :create, :edit, :new, :show]
 
