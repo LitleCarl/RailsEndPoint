@@ -48,7 +48,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         }).success(function (response) {
             if (ApiResponse.Check(response)) {
                 $scope.floors = ApiResponse.GetData(response)['floors'];
-                $scope.students = ApiResponse.GetData(response)['students'];
+                $scope.students = _.orderBy(ApiResponse.GetData(response)['students'], ['online'], ['desc']);
                 $scope.online_ids = ApiResponse.GetData(response)['online_ids'];
 
                 if ($scope.floors.length > 0){
