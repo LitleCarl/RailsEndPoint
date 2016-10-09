@@ -144,6 +144,12 @@ gem 'lodash-rails', '4.14.1'
 # Icheck的assets
 gem 'rails-assets-iCheck', source: 'https://rails-assets.org'
 
+# May the force label you
+gem 'rails-assets-labella', source: 'https://rails-assets.org'
+
+# A JavaScript visualization library for HTML and SVG.
+gem 'rails-assets-d3', source: 'https://rails-assets.org'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

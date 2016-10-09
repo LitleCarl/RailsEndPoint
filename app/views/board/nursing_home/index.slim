@@ -21,8 +21,8 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeInde
           .widget-user-header.bg-aqua-active style='border-radius: 0;'
             h3.widget-user-username = "延安路1823弄"
             br
-            h5.widget-user-desc ng-bind="'班级总人数:'+ students.length"
-            h5.widget-user-desc ng-bind="'在线人数:'+ online_count"
+            h5.widget-user-desc ng-bind="'总人数:'+ students.length"
+            h5.widget-user-desc ng-bind="'在线人数:'+ online_ids.length"
 
           .box-footer.no-padding
             ul.nav.nav-stacked
@@ -35,22 +35,60 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeInde
       section.content-header
       /! Main content
       section.content
-        .row ng-show='selectedStudent == null'
+        .row
           /.col-md-4
 
-          .col-md-7
+          .col-md-8
             .row
               .col-md-12
                 .box.box-danger
                   .box-header.with-border
                     h3.box-title 今日最新动态
                     .box-tools.pull-right
+                      .btn-group
+                        button.btn.btn-default.dropdown-toggle aria-expanded="false" data-toggle="dropdown" type="button"
+                          span ng-bind='selectedFloor.name || "选择楼层"'
+                        ul.dropdown-menu
+                          li ng-repeat='floor in floors'
+                            a ng-click='SelectFloor(floor)' ng-bind='floor.name'
 
                   .box-body
-                    /!TODO CAD图位置
+                    #canvas-wrapper style="width: 100%;position: relative;"
+                      img#canvas-image ng-src='{{selectedFloor.image}}' style=("width: 100%;") imageonload='ResizeCanvas()'
+                      canvas#canvas style="position: absolute;width: 100%;height: 100%;left: 0; top: 0; display: block;"
+          .col-md-4
+            .box.box-widget.widget-user ng-show='selectTrack != null'
+              /! Add the bg color to the header using any of the bg-* classes
+              .widget-user-header.bg-aqua-active
+                h3.widget-user-username ng-bind='selectedStudent.name'
+                h5.widget-user-desc
+                  |{{'姓名: '+(selectTrack.student.name || '无')}}
+                h5.widget-user-desc
+                  |{{'手环id: '+(selectTrack.student.device_id || '未设置')}}
+              .widget-user-image style='z-index:900'
+                img.img-circle alt=("User Avatar") ng-src="{{selectTrack.student.avatar}}" /
+              row
+                .col-md-12  style='padding:50px 30px;background: #f5f5f5;text-align: center'
+                  h4 当前所在位置:{{selectTrack.room.name}}
+                  h6 更新时间:{{selectTrack.created_at}}
+              .box-footer
+                .row
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 76
+                      span.description-text 脉搏
+                  /! /.description-block
+                  /! /.col
+                  .col-sm-6.border-right
+                    .description-block
+                      h5.description-header 36.8℃
+                      span.description-text 体温
 
 
 
+        .row
+          .col-md-12
+            #timeline
     /! /.box-footer
     /! /.direct-chat
     == include_slim 'app/views/common/footer'

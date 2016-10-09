@@ -13,3 +13,19 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.img-circle{
+  background: white;
+}
+
+/*
+  Timeline
+*/
+line.timeline{
+  stroke-width: 2px;
+  stroke: #888;
+}
+
+circle.dot{
+  fill: #222;
+}

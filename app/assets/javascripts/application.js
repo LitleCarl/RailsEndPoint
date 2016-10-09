@@ -10,6 +10,8 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require labella
+//= require d3
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
@@ -82,7 +84,7 @@ $(document).on('turbolinks:load', function () {
         mainModule.controller('BoardClazzShowController', ['$scope', '$http', '$attrs', BoardClazzShowController]);
         mainModule.controller('MeDetailController', ['$scope', '$http', MeDetailController]);
         mainModule.controller('ClazzNewController', ['$scope', '$http', ClazzNewController]);
-        mainModule.controller('ClazzNewController', ['$scope', '$http', BoardNursingHomeIndexController]);
+        mainModule.controller('BoardNursingHomeIndexController', ['$scope', '$http', '$interval', BoardNursingHomeIndexController]);
 
         // 自定义功能
         // ng-src图片加载完成

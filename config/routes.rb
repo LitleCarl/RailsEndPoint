@@ -89,6 +89,12 @@ Rails.application.routes.draw do
       collection do
         # 获取页面数据
         get :page_data
+
+        # 获取在线人员即时位置信息
+        get :realtime_geo_data
+
+        # 获取一天的历史轨迹
+        get :footprints
       end
     end
 
