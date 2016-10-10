@@ -43,6 +43,7 @@ var MeDetailController = function($scope, $http){
             function (response) {
                 if (ApiResponse.Check(response)) {
                     $scope.comments = ApiResponse.GetData(response)['comments'];
+                    $scope.allCommentsCount = ApiResponse.GetData(response)['all_comments_count'];
                 }
             }
         ).finally(

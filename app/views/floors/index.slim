@@ -30,7 +30,7 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='FloorIndexController
                     tbody
                       tr ng-repeat="floor in floors"
                         td
-                          a href="pages/examples/invoice.html" ng-bind="floor.name"
+                          a ng-href=("{{'/floors/' + floor.id}}") ng-bind="floor.name"
                         td
                           span.label.label-success ng-bind="floor.room_count"
                         td
@@ -38,7 +38,6 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='FloorIndexController
 
               .box-footer.clearfix style=("display: block;")
                 a.btn.btn-sm.btn-info.btn-flat.pull-left href=(new_floor_path)  新建
-                a.btn.btn-sm.btn-default.btn-flat.pull-right href="javascript:void(0)"  View All Orders
               .overlay ng-show="isLoadingForGetFloors"
                 i.fa.fa-refresh.fa-spin
     == include_slim 'app/views/common/footer'

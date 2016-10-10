@@ -40,14 +40,16 @@ class Teacher < ActiveRecord::Base
   #
   def self.query_comments_for_api(options={})
     comments = []
+    all_comments_count = 0
     response = Response.__rescue__ do |res|
       teacher, page, limit = options[:teacher], options[:page], options[:limit]
 
       res.__raise__(Response::Code::ERROR, '参数错误') if teacher.blank?
 
       comments = teacher.comments.where('created_at >= ?', Time.now.beginning_of_day).order('created_at DESC').page(page).per(limit)
+      all_comments_count = teacher.comments.count
     end
-    return response, comments
+    return response, comments, all_comments_count
   end
 
   #

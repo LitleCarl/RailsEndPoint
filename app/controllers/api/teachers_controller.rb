@@ -2,7 +2,7 @@ class Api::TeachersController < Api::ApiBaseController
 
   # 获取教师今日评论
   def comments
-    @response, @comments = Teacher.query_comments_for_api(params)
+    @response, @comments, @all_comments_count = Teacher.query_comments_for_api(params)
   end
 
   # 获取魔法棒配置

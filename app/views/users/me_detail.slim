@@ -53,13 +53,13 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='MeDetailController'
                 .row
                   .col-sm-6.border-right
                     .description-block
-                      h5.description-header 3,200
+                      h5.description-header ng-bind='comments.length'
                       span.description-text 今日点赞
                   /! /.description-block
                   /! /.col
                   .col-sm-6.border-right
                     .description-block
-                      h5.description-header 13,000
+                      h5.description-header ng-bind='allCommentsCount'
                       span.description-text 总点赞
 
 
