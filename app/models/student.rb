@@ -28,7 +28,23 @@ class Student < ActiveRecord::Base
   has_many :tracks
 
   # 学生今日的轨迹
-  def self.tracks_of_today
-    return self.tracks.where('created_at > ?', Time.now.beginning_of_day)
+  def tracks_of_today(options={})
+    today = Time.now.beginning_of_day
+    duplicate = options[:duplicate] || false
+    if duplicate
+      return self.tracks.where('created_at > ?', today)
+    else
+      return Track.find_by_sql("SELECT * FROM (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id})  n
+                                  WHERE n.created_at > '#{today}' AND NOT
+                                        (
+                                        SELECT  room_id
+                                        FROM  (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id})  ni
+                                        WHERE   ni.id < n.id
+                                        ORDER BY
+                                                id DESC
+                                        LIMIT 1
+                                        ) <=> room_id")
+    end
+
   end
 end

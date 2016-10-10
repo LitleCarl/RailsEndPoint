@@ -275,7 +275,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         //    {date: new Date(2015,11,31), name: 'Voldemort'}
         //];
 
-        var formatDate = d3.timeFormat('%H:%M');
+        var formatDate = d3.timeFormat('%H时%M分');
 
         var options =   {
             margin: {left: 20, right: 20, top: 20, bottom: 20},

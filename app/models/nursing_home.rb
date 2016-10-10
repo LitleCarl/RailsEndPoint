@@ -63,7 +63,7 @@ class NursingHome
       student = Student.query_first_by_id student_id
       res.__raise__(Response::Code::ERROR, '学生不存在') if student.blank?
 
-      tracks = student.tracks.where('created_at > ?', Time.now.beginning_of_day)
+      tracks = student.tracks_of_today(duplicate: false)
     end
     return response, tracks
   end

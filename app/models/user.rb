@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   # 默认统计时效
   module StatisticThreshold
     MIN = 5.minutes
-    DAY = 10.days
+    DAY = 3.hours
   end
 
   # 用户的历史轨迹
