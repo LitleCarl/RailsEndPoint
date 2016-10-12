@@ -1,5 +1,5 @@
 class Api::FloorsController < Api::ApiBaseController
-
+  skip_before_filter :user_authenticate, only:[:station_mapping]
   def index
     @response, @floors = Floor.query_all_with_options_for_api(params)
   end
