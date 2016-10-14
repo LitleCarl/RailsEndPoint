@@ -53,4 +53,27 @@ class Room < ActiveRecord::Base
 
     return response
   end
+
+  #
+  # 更新房间数据
+  #
+  # @param options [Hash]
+  # option options [id] :room_id
+  # option options [name] :新名字
+  #
+  # @return [Response, Array] 状态，楼道对象
+  #
+  def self.update_with_options(options={})
+    response = Response.__rescue__ do |res|
+      room_id, name = options[:id], options[:name]
+
+      res.__raise__(Response::Code::ERROR, '缺少参数') if room_id.blank? || name.blank?
+      room = Room.query_first_by_id room_id
+
+      res.__raise__(Response::Code::ERROR, '房间不存在') if room.blank?
+      room.name = name
+      room.save!
+    end
+    return response
+  end
 end

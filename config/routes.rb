@@ -25,7 +25,8 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :rooms do
+    # 房间
+    resources :rooms, only: [:update] do
       member do
         post :create_station
       end

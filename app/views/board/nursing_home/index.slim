@@ -7,7 +7,7 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeInde
       a.logo.bg-aqua-active style='border-right-width: 0;'
         /! mini logo for sidebar mini 50x50 pixels
         span.logo-lg
-          b> 常州市**养老院
+          b> 海阳智慧养老服务中心
       /! Header Navbar
       nav.navbar.navbar-static-top role="navigation" style='line-height: 50px;padding-left: 30px'
         a style='font-size:1.3em; cursor: pointer;' ng-show='selectedStudent != null' ng-click='BackToMainPage()' 返回
@@ -19,10 +19,11 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeInde
         .box.box-widget.widget-user
           /! Add the bg color to the header using any of the bg-* classes
           .widget-user-header.bg-aqua-active style='border-radius: 0;'
-            h3.widget-user-username = "延安路1823弄"
+            span style='font-size:1em;' 地址: 河海二村(燕山路和岷江路路口东侧)
             br
-            h5.widget-user-desc ng-bind="'总人数:'+ students.length"
-            h5.widget-user-desc ng-bind="'在线人数:'+ online_ids.length"
+            br
+            h5.widget-user-desc style='display: inline-block' ng-bind="'总人数:'+ students.length"
+            h5.widget-user-desc.pull-right style='display: inline-block' ng-bind="'在线人数:'+ online_ids.length"
 
           .box-footer.no-padding
             ul.nav.nav-stacked

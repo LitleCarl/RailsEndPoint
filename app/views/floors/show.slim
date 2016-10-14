@@ -6,6 +6,18 @@ javascript:
 
 
 body.hold-transition.skin-black.sidebar-mini ng-controller='FloorShowController' data-floorid=(@floor_id)
+  #update-room-name.modal.fade role="dialog" tabindex="-1"
+    .modal-dialog role="document"
+      .modal-content
+        .modal-header
+          button.close aria-label="Close" data-dismiss="modal" type="button"
+            span aria-hidden="true"  &times;
+          h4.modal-title 更新房间名
+        .modal-body
+          input.form-control ng-model='SelectedRoom.name' placeholder=("更新房间名") type="text" /
+        .modal-footer
+          button.btn.btn-default data-dismiss="modal" type="button"  取消
+          button.btn.btn-primary type="button" ng-click='ApplyUpdateRoom()'  保存
   .wrapper
     /! Main Header
     == include_slim 'app/views/common/nav'
@@ -133,14 +145,10 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='FloorShowController'
                 #room-rightbar.nav-tabs-custom style="overflow-y: scroll;"
                   ul.nav.nav-tabs
                     li.active
-                      a aria-expanded="true" data-toggle="tab" href="#activity"  数据
-                    li
                       a aria-expanded="false" data-toggle="tab" href="#timeline"  房间/走道
 
                   .tab-content
-                    #activity.tab-pane.active
-                      |AA
-                    #timeline.tab-pane
+                    #timeline.tab-pane.active
                       .small-box.bg-aqua ng-repeat='room in floor.rooms' ng-click='selectRoom($index)'
                         .inner
                           h3 房间:{{room.name}}
@@ -148,8 +156,8 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='FloorShowController'
                           br
                         .icon
                           i.fa.fa-home
-                        a.small-box-footer href="#"
-                          | 查看在线学生
+                        a.small-box-footer style='cursor: pointer;' ng-click='UpdateRoom(room)'
+                          | 修改
                           i.fa.fa-arrow-circle-right
 
     /! /.tab-pane

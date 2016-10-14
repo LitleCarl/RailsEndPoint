@@ -1,4 +1,30 @@
 var FloorShowController = function($scope, $http, $attrs) {
+    $scope.UpdateRoom = function (room) {
+        $scope.SelectedRoom = room;
+        $('#update-room-name').modal('show')
+    };
+
+    $scope.ApplyUpdateRoom = function () {
+        RequestHandler({
+            http: $http,
+            path: '/api/rooms/'+ $scope.SelectedRoom.id +'.json',
+            method: 'put',
+            data: {
+                name: $scope.SelectedRoom.name
+            }
+        }).success(
+            function (response) {
+                if (ApiResponse.Check(response)) {
+                    // 添加成功,置空变量
+                    $scope.SelectedRoom = null;
+                    $('#update-room-name').modal('hide');
+
+                    alert('更新成功')
+
+                }
+            }
+        )
+    };
 
     $scope.floorID = $attrs.floorid;
 
