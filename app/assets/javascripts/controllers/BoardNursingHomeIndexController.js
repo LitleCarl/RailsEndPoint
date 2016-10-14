@@ -24,6 +24,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         stop = $interval(function() {
             // 拉去用户位置信息
             LoadForGeoData();
+            $scope.GetData();
         }, 1000 * 30); // 30秒更新一次
         LoadForGeoData();// 初始化加载一次
     })();
@@ -51,7 +52,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
                 $scope.students = _.orderBy(ApiResponse.GetData(response)['students'], ['online'], ['desc']);
                 $scope.online_ids = ApiResponse.GetData(response)['online_ids'];
 
-                if ($scope.floors.length > 0){
+                if ($scope.floors.length > 0 && $scope.selectedFloor == null){
                     $scope.SelectFloor($scope.floors[0]);
                 }
 
