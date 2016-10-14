@@ -51,7 +51,7 @@ module Concerns::Board::ClazzConcern
       online_student_ids = []
       response = Response.__rescue__ do |res|
         clazz_id = options[:id]
-        from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::DAY)
+        from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::MIN)
 
         res.__raise__(Response::Code::ERROR, '参数错误') if clazz_id.blank?
 

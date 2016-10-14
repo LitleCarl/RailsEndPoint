@@ -9,7 +9,7 @@ class NursingHome
   #
   def self.query_page_data_for_board(options={})
     floors, students, online_ids = [], [], []
-    from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::DAY)
+    from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::MIN)
 
     response = Response.__rescue__ do |res|
       students = Student.all
@@ -36,7 +36,7 @@ class NursingHome
   def self.query_realtime_geo_data(options={})
     tracks = []
     response = Response.__rescue__ do |res|
-      from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::DAY)
+      from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::MIN)
 
       tracks = Track.find_by_sql("SELECT t1.* FROM `tracks` t1
                                                                         LEFT JOIN `tracks` t2 ON (t1.`student_id` = t2.`student_id` AND t1.`id` < t2.`id` )

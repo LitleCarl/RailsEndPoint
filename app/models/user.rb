@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 
   # 默认统计时效
   module StatisticThreshold
-    MIN = 5.minutes
+    MIN = 10.minutes
     DAY = 3.hours
   end
 
@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   def self.statistics_for_online_count_of_floors (options = {})
     data = []
     response = Response.__rescue__ do |res|
-      from_time= options[:minute_threshold] || (Time.now - StatisticThreshold::DAY)
+      from_time= options[:minute_threshold] || (Time.now - StatisticThreshold::MIN)
       result = ActiveRecord::Base.connection.execute("SELECT COUNT(IF(p1.`created_at` >  '#{from_time}', 1, null)) AS count, floor.id, floor.name  FROM `payloads` p1
                                                       LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
                                                       LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` )
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   def self.statistics_for_online_count_of_rooms (options = {})
     data = []
     response = Response.__rescue__ do |res|
-      from_time= options[:minute_threshold] || (Time.now - StatisticThreshold::DAY)
+      from_time= options[:minute_threshold] || (Time.now - StatisticThreshold::MIN)
       floor_id= options[:floor_id]
 
       res.__raise__(Response::Code::ERROR, '参数错误') if floor_id.blank?
