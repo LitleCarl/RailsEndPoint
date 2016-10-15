@@ -1,4 +1,9 @@
 body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeIndexController'
+  #tracks-view ng-show='selectTrack != null && showTracks'
+    a.btn.btn-default.btn-sm#close-btn ng-click='HideTrack(selectTrack)' 关闭
+    .row
+      .col-md-12
+        #timeline
   .wrapper
     /! Main Header
     /! Left side column. contains the logo and sidebar
@@ -86,12 +91,6 @@ body.hold-transition.skin-black.sidebar-mini ng-controller='BoardNursingHomeInde
                     .description-block
                       h5.description-header 36.8℃
                       span.description-text 体温
-
-
-
-        .row
-          .col-md-12
-            #timeline
     /! /.box-footer
     /! /.direct-chat
     == include_slim 'app/views/common/footer'

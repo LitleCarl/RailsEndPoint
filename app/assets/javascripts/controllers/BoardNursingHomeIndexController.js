@@ -1,5 +1,5 @@
 var BoardNursingHomeIndexController = function($scope, $http, $interval) {
-
+    $scope.showTracks = false;
     var stop;
     (function() {
         // Don't start a new fight if we are already fighting
@@ -201,6 +201,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
                 if (closeToClick){
                     // 点击了地图上的人员
                     $scope.selectTrack = track;
+                    $scope.showTracks = true;
                     track.highLighted = true;
                     trackSelected = track;
                     $scope.$apply();
@@ -210,6 +211,10 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
                 redraw()
             }
         }
+    }
+
+    $scope.HideTrack = function (track) {
+        $scope.showTracks = false;
     }
 
     // 鼠标移动事件
@@ -263,24 +268,12 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
 
     function drawTimeLine(){
         var data = $scope.footprints;
-        //[
-        //    {date: new Date(2015,0,9), name: 'Snape'},
-        //    {date: new Date(2015,0,30), name: 'Lily'},
-        //    {date: new Date(2015,2,1), name: 'Ron'},
-        //    {date: new Date(2015,2,27), name: 'James'},
-        //    {date: new Date(2015,5,5), name: 'Draco'},
-        //    {date: new Date(2015,6,30), name: 'Neville'},
-        //    {date: new Date(2015,6,31), name: 'Harry'},
-        //    {date: new Date(2015,8,19), name: 'Hermione'},
-        //    {date: new Date(2015,11,6), name: 'Hagrid'},
-        //    {date: new Date(2015,11,31), name: 'Voldemort'}
-        //];
 
         var formatDate = d3.timeFormat('%H时%M分');
 
         var options =   {
             margin: {left: 20, right: 20, top: 20, bottom: 20},
-            initialWidth: 800,
+            initialWidth: $("#tracks-view").width(),
             initialHeight: 220
         };
 
