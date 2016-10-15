@@ -34,11 +34,11 @@ class Student < ActiveRecord::Base
     if duplicate
       return self.tracks.where('created_at > ?', today)
     else
-      return Track.find_by_sql("SELECT * FROM (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id} WHERE t1.created_at > '#{today}')  n
+      return Track.find_by_sql("SELECT * FROM (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id} AND t1.created_at > '#{today}')  n
                                   WHERE NOT
                                         (
                                         SELECT  room_id
-                                        FROM  (SELECT * from `tracks` t2 WHERE t2.`student_id` = #{self.id} WHERE t2.created_at > '#{today}')  ni
+                                        FROM  (SELECT * from `tracks` t2 WHERE t2.`student_id` = #{self.id} AND t2.created_at > '#{today}')  ni
                                         WHERE   ni.id < n.id
                                         ORDER BY
                                                 id DESC
