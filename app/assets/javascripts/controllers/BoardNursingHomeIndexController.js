@@ -274,7 +274,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         var options =   {
             margin: {left: 20, right: 20, top: 20, bottom: 20},
             initialWidth: $("#tracks-view").width(),
-            initialHeight: 220
+            initialHeight: 800
         };
 
         var innerWidth =  options.initialWidth - options.margin.left - options.margin.right;
