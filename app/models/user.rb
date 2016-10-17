@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 
   # 默认统计时效
   module StatisticThreshold
-    MIN = 10.minutes
+    MIN = 500.minutes
     DAY = 3.hours
   end
 
