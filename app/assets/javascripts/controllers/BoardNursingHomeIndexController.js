@@ -108,18 +108,19 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         // 画出房间轮廓
         rooms.forEach(function (room, idx) {
             var points = eval(room.location);
-            var path2d = ConvertPointsToPath2D(points);
-            ctx.stroke(path2d);
-            ctx.fillStyle = room.highLighted ? 'rgba(52, 152, 219, 0.3)' : 'rgba(255,165,0,0.3)';
-            ctx.fill(path2d);
 
-            var centroid = d3.polygonCentroid(points);
-            if (centroid && centroid[0] && centroid[1]) {
-                ctx.textAlign = 'center';
-                ctx.fillStyle = 'rgba(0,0,0,1)';
+            if (points && points.length > 0) {
+                DrawPaths(room, ctx);
 
-                ctx.fillText(rooms[idx].name || '未命名', centroid[0] * $('#canvas').width(), centroid[1] * $('#canvas').height());
+                var centroid = d3.polygonCentroid(points);
+                if (centroid && centroid[0] && centroid[1]) {
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = 'rgba(0,0,0,1)';
+
+                    ctx.fillText(rooms[idx].name || '未命名', centroid[0] * $('#canvas').width(), centroid[1] * $('#canvas').height());
+                }
             }
+
         });
 
         // 画出人员位置
@@ -173,9 +174,11 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         // 1.检测鼠标是否停放在paths中的某一区域,是则高亮
         rooms.forEach(function (room) {
             var points = eval(room.location);
-            room.highLighted = d3.polygonContains(_.map(points, function (point) {
-                return [point[0] * $('#canvas').width(), point[1] * $('#canvas').height()];
-            }), [mouseX, mouseY]);
+            if (points && points.length > 0){
+                room.highLighted = d3.polygonContains(_.map(points, function (point) {
+                    return [point[0] * $('#canvas').width(), point[1] * $('#canvas').height()];
+                }), [mouseX, mouseY]);
+            }
         });
         redraw();
     }
@@ -236,6 +239,26 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
         tempPath2d.closePath();
         return tempPath2d;
     }
+
+    function DrawPaths(room, ctx) {
+        var points = eval(room.location);
+        if (points != null && points.length > 0) {
+            points.forEach(function (point, index) {
+                if (index == 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(point[0] * $('#canvas').width(), point[1] * $('#canvas').height());
+                }
+                else {
+                    ctx.lineTo(point[0] * $('#canvas').width(), point[1] * $('#canvas').height());
+                }
+            });
+            ctx.closePath();
+
+            ctx.stroke();
+            ctx.fillStyle = room.highLighted ? 'rgba(52, 152, 219, 0.3)' : 'rgba(255,165,0,0.3)';
+            ctx.fill();
+        }
+     }
 
     // 计算离起点的距离
     function testOriginPointDistance(origin, x, y, threshold) {
