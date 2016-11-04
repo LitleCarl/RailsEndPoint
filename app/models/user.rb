@@ -54,13 +54,28 @@ class User < ActiveRecord::Base
     data = []
     response = Response.__rescue__ do |res|
       from_time= options[:minute_threshold] || (Time.now - StatisticThreshold::MIN)
-      result = ActiveRecord::Base.connection.execute("SELECT COUNT(IF(p1.`created_at` >  '#{from_time}', 1, null)) AS count, floor.id, floor.name  FROM `payloads` p1
-                                                      LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
-                                                      LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` )
-                                                      LEFT JOIN `rooms` as room ON (room.`id` = station.`room_id` )
-                                                      RIGHT JOIN `floors` AS floor ON (floor.`id` = room.`floor_id` )
-                                                      WHERE  p2.`id` IS NULL
-                                                      GROUP BY floor.`id`")
+      # result = ActiveRecord::Base.connection.execute("SELECT COUNT(IF(p1.`created_at` >  '#{from_time}', 1, null)) AS count, floor.id, floor.name  FROM `payloads` p1
+      #                                                 LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
+      #                                                 LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` )
+      #                                                 LEFT JOIN `rooms` as room ON (room.`id` = station.`room_id` )
+      #                                                 RIGHT JOIN `floors` AS floor ON (floor.`id` = room.`floor_id` )
+      #                                                 WHERE  p2.`id` IS NULL
+      #                                                 GROUP BY floor.`id`")
+
+      result = ActiveRecord::Base.connection.execute("SELECT SUM(case when T3.floor_id IS NULL then 0 else 1 end) AS count, f.`id`,f.`name`
+                                                      FROM `floors` AS f
+                                                      LEFT JOIN(
+                                                    Select R.`floor_id`
+                                                      from(
+                                                    select *
+                                                      from(
+                                                    SELECT p1.*
+                                                      FROM `payloads` p1
+                                                     WHERE p1.`created_at`> '#{from_time}'
+                                                     ORDER BY p1.`id` DESC) As T
+                                                     GROUP BY T.`student_id`) as T2 JOIN `stations` S on T2.station_id= S.`id` JOIN `rooms` as R ON R.`id`= S.`room_id`) AS T3 ON T3.floor_id= F.`id`
+                                                     GROUP BY f.`name` ")
+
       # row structure
       # [count, floor_id, floor_name]
       result.each do|row|
