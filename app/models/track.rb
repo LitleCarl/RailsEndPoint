@@ -30,11 +30,11 @@ class Track < ActiveRecord::Base
   # option options [location] :基站新的坐标
   # option options [extra] :额外信息, 可选
   #
-  # @return [Response, Array] 状态
+  # @return [Response] 状态
   #
   def self.create_with_options(options={})
     response = Response.__rescue__ do |res|
-      station_device_id, bracelet_device_id, location, extra = options[:station_device_id], options[:bracelet_device_id], options[:location], options[:extra]
+      station_device_id, bracelet_device_id, location, extra, created_at = options[:station_device_id], options[:bracelet_device_id], options[:location], options[:extra], options[:created_at]
 
       res.__raise__(Response::Code::ERROR, '参数错误') if station_device_id.blank? || bracelet_device_id.blank? || location.blank?
 
@@ -50,6 +50,7 @@ class Track < ActiveRecord::Base
       track.student = student
       track.location = location
       track.extra = extra if extra.present?
+      track.created_at = created_at if created_at.present?
       track.save!
 
       # 创建Payload

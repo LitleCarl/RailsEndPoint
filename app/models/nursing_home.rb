@@ -15,10 +15,16 @@ class NursingHome
       students = Student.all
       floors = Floor.all
 
-      result = ActiveRecord::Base.connection.execute("SELECT stu.id FROM `payloads` p1
-                                                                    LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
-                                                                    LEFT JOIN `students` stu ON (p1.`student_id` = stu.id)
-                                                                    WHERE  p2.`id` IS NULL AND stu.`id` IS NOT NULL AND p1.`created_at` >= '#{from_time}'")
+      # result = ActiveRecord::Base.connection.execute("SELECT stu.id FROM `payloads` p1
+      #                                                               LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
+      #                                                               LEFT JOIN `students` stu ON (p1.`student_id` = stu.id)
+      #                                                               WHERE  p2.`id` IS NULL AND stu.`id` IS NOT NULL AND p1.`created_at` >= '#{from_time}'")
+      result = ActiveRecord::Base.connection.execute("SELECT student_id FROM (
+                                                                        SELECT p1.*
+                                                                        FROM `payloads` p1
+                                                                        WHERE p1.`created_at`>= '#{from_time}'
+                                                                        ORDER BY p1.`id` DESC) AS T
+                                                                       GROUP BY T.`student_id`")
       result.each do|row|
         online_ids << row[0]
       end
@@ -38,10 +44,16 @@ class NursingHome
     response = Response.__rescue__ do |res|
       from_time= options[:minute_threshold] || (Time.now - User::StatisticThreshold::MIN)
 
-      tracks = Track.find_by_sql("SELECT t1.* FROM `tracks` t1
-                                                                        LEFT JOIN `tracks` t2 ON (t1.`student_id` = t2.`student_id` AND t1.`id` < t2.`id` )
-                                                                        LEFT JOIN `students` stu ON (t1.`student_id` = stu.id)
-                                                                        WHERE  t2.`id` IS NULL AND stu.`id` IS NOT NULL  AND t1.`created_at` >= '#{from_time}'")
+      # tracks = Track.find_by_sql("SELECT t1.* FROM `tracks` t1
+      #                                                                   LEFT JOIN `tracks` t2 ON (t1.`student_id` = t2.`student_id` AND t1.`id` < t2.`id` )
+      #                                                                   LEFT JOIN `students` stu ON (t1.`student_id` = stu.id)
+      #                                                                   WHERE  t2.`id` IS NULL AND stu.`id` IS NOT NULL  AND t1.`created_at` >= '#{from_time}'")
+      tracks = Track.find_by_sql("SELECT * FROM (
+                                    SELECT t1.*
+                                    FROM `tracks` t1
+                                    WHERE t1.`created_at`>= '#{from_time}'
+                                    ORDER BY t1.`id` DESC) AS T
+                                GROUP BY T.`student_id`")
     end
     return response, tracks
   end

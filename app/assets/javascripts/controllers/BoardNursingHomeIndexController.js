@@ -25,7 +25,7 @@ var BoardNursingHomeIndexController = function($scope, $http, $interval) {
             // 拉去用户位置信息
             LoadForGeoData();
             $scope.GetData();
-        }, 1000 * 5); // 30秒更新一次
+        }, 1000 * 30); // 30秒更新一次
         LoadForGeoData();// 初始化加载一次
     })();
 
