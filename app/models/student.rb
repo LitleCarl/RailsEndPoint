@@ -34,16 +34,26 @@ class Student < ActiveRecord::Base
     if duplicate
       return self.tracks.where('created_at > ?', today)
     else
-      return Track.find_by_sql("SELECT * FROM (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id} AND t1.created_at > '#{today}')  n
-                                  WHERE NOT
-                                        (
-                                        SELECT  room_id
-                                        FROM  (SELECT * from `tracks` t2 WHERE t2.`student_id` = #{self.id} AND t2.created_at > '#{today}')  ni
-                                        WHERE   ni.id < n.id
-                                        ORDER BY
-                                                id DESC
-                                        LIMIT 1
-                                        ) <=> room_id")
+      # return Track.find_by_sql("SELECT * FROM (SELECT * from `tracks` t1 WHERE t1.`student_id` = #{self.id} AND t1.created_at > '#{today}')  n
+      #                             WHERE NOT
+      #                                   (
+      #                                   SELECT  room_id
+      #                                   FROM  (SELECT * from `tracks` t2 WHERE t2.`student_id` = #{self.id} AND t2.created_at > '#{today}')  ni
+      #                                   WHERE   ni.id < n.id
+      #                                   ORDER BY
+      #                                           id DESC
+      #                                   LIMIT 1
+      #                                   ) <=> room_id")
+      result = Track.find_by_sql("SELECT * FROM (
+                                  SELECT IF (@lastRoom = t.room_id, 1, 0) AS equ,
+                                  @lastRoom:=t.room_id AS just_for_internal, t.* FROM (
+                                      SELECT * FROM `tracks` t1 WHERE t1.`student_id` = #{self.id} AND t1.`created_at` > '#{today}' ORDER BY t1.`created_at` ASC )
+                                  AS t ,(SELECT @lastRoom := 0) AS r
+                              ) result WHERE result.equ = 0")
+      if result.count > 100
+        result = result.last(80)
+      end
+      return result
     end
 
   end
