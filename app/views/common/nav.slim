@@ -43,13 +43,13 @@ header.main-header
             /! The user image in the navbar
             img.user-image alt=("User Image") src="http://7xnsaf.com1.z0.glb.clouddn.com/geo/avatar/male.png" /
             /! hidden-xs hides the username on small devices so only the image appears.
-            span.hidden-xs 曹佳鑫
+            span.hidden-xs = params[:user].teacher.name
           ul.dropdown-menu
             /! The user image in the menu
             li.user-header
               img.img-circle alt=("User Image") src="http://7xnsaf.com1.z0.glb.clouddn.com/geo/avatar/male.png" /
               p
-                | 南桥小学
+                | #{::LocalVariablesSetting.school_name}
                 small Member since Nov. 2012
 
             /! /.row

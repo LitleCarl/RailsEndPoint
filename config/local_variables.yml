@@ -1,0 +1,14 @@
+# encoding: UTF-8
+
+defaults: &defaults
+  school_name: 南桥小学
+
+development: &development
+  <<: *defaults
+
+test:
+  <<: *development
+
+production:
+  <<: *development
+

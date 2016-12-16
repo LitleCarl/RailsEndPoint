@@ -106,17 +106,30 @@ class User < ActiveRecord::Base
 
       res.__raise__(Response::Code::ERROR, '楼层不存在') if floor.blank?
 
-      result = ActiveRecord::Base.connection.execute("SELECT COUNT(IF(p1.`created_at` >  '#{from_time}', 1, null)) AS count, room.id, room.name FROM `payloads` p1
-                                                      LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
-                                                      LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` )
-                                                      RIGHT JOIN `rooms` as room ON (room.`id` = station.`room_id`)
-                                                      WHERE  p2.`id` IS NULL AND room.`floor_id` = #{floor.id}
-                                                      GROUP BY room.id
-                                                      ")
+      # result = ActiveRecord::Base.connection.execute("SELECT COUNT(IF(p1.`created_at` >  '#{from_time}', 1, null)) AS count, room.id, room.name FROM `payloads` p1
+      #                                                 LEFT JOIN `payloads` p2 ON (p1.`student_id` = p2.`student_id` AND p1.`id` < p2.`id` )
+      #                                                 LEFT JOIN `stations` AS station ON ( station.`id` = p1.`station_id` )
+      #                                                 RIGHT JOIN `rooms` as room ON (room.`id` = station.`room_id`)
+      #                                                 WHERE  p2.`id` IS NULL AND room.`floor_id` = #{floor.id}
+      #                                                 GROUP BY room.id
+      #                                                 ")
+
+      result = ActiveRecord::Base.connection.execute("SELECT COUNT(RESULT.name) as count, RESULT.id, RESULT.name FROM  (SELECT room.* FROM (SELECT * FROM (
+                                                                SELECT p1.*
+                                                                FROM `payloads` p1
+                                                                WHERE p1.`created_at`>= '#{from_time}'
+                                                                ORDER BY p1.`id` DESC) AS T
+                                                            GROUP BY T.`student_id` )AS R  LEFT JOIN `stations` AS station ON ( station.`id` = R.`station_id` )
+                                                            LEFT JOIN `rooms` as room ON (room.`id` = station.`room_id`)
+                                                            WHERE room.`floor_id` = #{floor.id}) AS RESULT GROUP BY RESULT.name")
       # row structure
       # [count, room_id, room_name]
       data = result.map do|row|
         {count: row[0], room: {id: row[1], name: row[2]}}
+      end
+
+      Room.query_by_options({floor_id: floor.id}).where.not(id: result.map {|row| row[1]}).each do |room|
+        data << {count: 0, room: {id: room.id, name: room.name}}
       end
     end
     return response, data
